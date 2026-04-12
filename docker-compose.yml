@@ -1,0 +1,12 @@
+services:
+  frontend:
+    image: node:24.14-slim
+    container_name: react-vite-app
+    volumes:
+      - .:/app
+    working_dir: /app
+    ports:
+      - "5173:5173"
+    command: npm run dev
+    environment:
+      - CHOKIDAR_USEPOLLING=true
