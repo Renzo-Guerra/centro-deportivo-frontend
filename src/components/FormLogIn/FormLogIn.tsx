@@ -26,7 +26,7 @@ const FormLogIn = () => {
   useEffect(() => {
     if (data) {
       localStorage.setItem("token", data.token);
-      navigate("" /* Agregar url cuando esté el dashboard */, { replace: true })
+      navigate("/dashboard", { replace: true })
     }
     if (error) {
       setError("root", {
