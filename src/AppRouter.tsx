@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import LogInPage from "./pages/LogInPage";
+import { BrowserRouter, Navigate, Route } from "react-router-dom";
+import LogInPage from "./pages/LogInPage/LogInPage";
+import RoutesWithNotFound from "./routes/RoutesWithNotFound";
+import Dashboard from "./pages/Dashboard/Dashboard";
 
 interface Props {
   children: ReactNode,
@@ -9,10 +11,11 @@ interface Props {
 const AppRouter = ({ children }: Props) => {
   return (
     <BrowserRouter >
-      <Routes>
+      <RoutesWithNotFound>
         <Route path="/" element={<Navigate to={"/login"} />} />
         <Route path="/login" element={<LogInPage />} />
-      </Routes>
+        <Route path="/dashboard" element={<Dashboard />} />
+      </RoutesWithNotFound>
       {children}
     </BrowserRouter >
   )

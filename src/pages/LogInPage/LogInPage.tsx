@@ -1,4 +1,4 @@
-import FormLogIn from "../components/FormLogIn/FormLogIn";
+import FormLogIn from "../../components/FormLogIn/FormLogIn";
 import "./LogInPage.css";
 
 const LogInPage = () => {
