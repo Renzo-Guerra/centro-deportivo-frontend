@@ -5,11 +5,13 @@ import FormInput from "../FormInput/FormInput";
 import useFetch from "../../hooks/useFetch";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import "./FormLogIn.css";
 
 const FormLogIn = () => {
   const {
     handleSubmit,
     control,
+    setError,
     formState: { errors }
   } = useForm<LogInFormValues>({
     resolver: zodResolver(logInSchema)
@@ -26,7 +28,12 @@ const FormLogIn = () => {
       localStorage.setItem("token", data.token);
       navigate("" /* Agregar url cuando esté el dashboard */, { replace: true })
     }
-  }, [data])
+    if (error) {
+      setError("root", {
+        message: "Credenciales inválidas o error de conexión."
+      });
+    }
+  }, [data, error])
 
   const submitHandler = (data: LogInFormValues) => {
     const urlLogIn = "http://localhost:8080/api/autenticacion/login";
@@ -35,22 +42,13 @@ const FormLogIn = () => {
 
   return (
     <>
-      {isLoading && (
-        <p>Cargando...</p>
-      )}
-
-      {data && (
-        <p>Token guardado!</p>
-      )}
-
-      {error && (
-        <p>Error al ingresar usuario y contraseña, intente nuevamente!</p>
-      )}
-
       <form onSubmit={handleSubmit(submitHandler)}>
         <FormInput name={"email"} label={"Email"} control={control} type="email" error={errors.email} />
         <FormInput name={"contrasenia"} label={"Contraseña"} control={control} type="password" error={errors.contrasenia} />
-        <button type="submit">Loguearse</button>
+        <button className="btn" disabled={isLoading} type="submit">Loguearse</button>
+        {errors.root && (
+          <span className="error-msg">{errors.root.message}</span>
+        )}
       </form>
     </>
   )

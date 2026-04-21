@@ -1,6 +1,7 @@
 import { Controller, type Control, type FieldError } from "react-hook-form";
 import type { LogInFormValues } from "../../models";
 import type { HTMLInputTypeAttribute } from "react";
+import "./FormInput.css";
 
 interface Props {
   name: keyof LogInFormValues,

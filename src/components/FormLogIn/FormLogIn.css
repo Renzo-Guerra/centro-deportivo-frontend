@@ -1,0 +1,54 @@
+form {
+  background: #ffffff;
+  font-family: 'Inter', system-ui, sans-serif;
+  padding: 2.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  /* Ancho máximo en escritorio */
+  margin: 1rem;
+  /* Margen para móviles */
+  display: flex;
+  flex-direction: column;
+}
+
+.btn {
+  background-color: #2563eb;
+  color: white;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 1rem;
+}
+
+.btn:hover {
+  background-color: #1d4ed8;
+}
+
+.btn:disabled {
+  background-color: #93c5fd;
+  cursor: not-allowed;
+}
+
+span {
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.error-msg {
+  color: rgb(223, 31, 47);
+}
+
+/* Responsive total */
+@media (max-width: 480px) {
+  form {
+    padding: 1.5rem;
+    box-shadow: none;
+    border: 1px solid #e5e7eb;
+  }
+}
