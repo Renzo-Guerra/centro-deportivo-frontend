@@ -5,7 +5,7 @@ import type { HTMLInputTypeAttribute } from "react";
 interface Props {
   name: keyof LogInFormValues,
   label: string,
-  control: Control<LogInFormValues>
+  control: Control<LogInFormValues>,
   type?: HTMLInputTypeAttribute,
   error?: FieldError,
 }
