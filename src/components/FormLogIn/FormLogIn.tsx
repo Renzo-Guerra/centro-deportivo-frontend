@@ -1,13 +1,13 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { type LogInFormValues, logInSchema } from "../../models"
-import FormInput from "../FormInput/FormInput";
-import useFetch from "../../hooks/useFetch";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./FormLogIn.css";
+import { useFetchManual } from "../../hooks";
+import { FormInput } from "../FormInput/FormInput";
 
-const FormLogIn = () => {
+export const FormLogIn = () => {
   const {
     handleSubmit,
     control,
@@ -19,7 +19,7 @@ const FormLogIn = () => {
 
   const navigate = useNavigate();
 
-  const { data, isLoading, error, submitRequest } = useFetch();
+  const { data, isLoading, error, submitRequest } = useFetchManual<{ token: string }>();
 
   // Al enviarse el form, si el log in es valido, devolverá el token al usuario, 
   // el cual guardaremos en el Local Storage
@@ -36,7 +36,7 @@ const FormLogIn = () => {
   }, [data, error])
 
   const submitHandler = (data: LogInFormValues) => {
-    const urlLogIn = "http://localhost:8080/api/autenticacion/login";
+    const urlLogIn = "/autenticacion/login";
     submitRequest(urlLogIn, "post", data);
   }
 
@@ -53,5 +53,3 @@ const FormLogIn = () => {
     </>
   )
 }
-
-export default FormLogIn;

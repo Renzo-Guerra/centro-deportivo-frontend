@@ -1,0 +1,15 @@
+.turnos_container {
+  display: grid;
+  padding: 1rem;
+}
+
+.turnos_container h2 {
+  color: rgb(8, 45, 148);
+  font-weight: 900;
+}
+
+.turnos_container>*:not(:last-child) {
+  border-bottom: 1px solid rgba(0, 0, 128, 0.2);
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+}

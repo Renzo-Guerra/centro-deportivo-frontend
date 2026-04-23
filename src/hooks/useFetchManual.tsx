@@ -1,13 +1,14 @@
 import { useState } from "react";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import type { httpMethod } from "../models/types/htppMethodType";
+import { axiosInterceptor } from "../interceptors";
 
-const useFetch = () => {
-  const [data, setData] = useState<any | null>(null);
+export const useFetchManual = <T,>() => {
+  const [data, setData] = useState<T | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<AxiosError | null>(null);
 
-  const submitRequest = (url: string, method: httpMethod = "get", body: any) => {
+  const submitRequest = <E,>(url: string, method: httpMethod = "get", body?: E) => {
     const controller = new AbortController();
 
     const config = {
@@ -19,7 +20,7 @@ const useFetch = () => {
     setIsLoading(true);
     setError(null);
 
-    axios(url, config)
+    axiosInterceptor(url, config)
       .then(response => setData(response.data))
       .catch(err => {
         console.error(err);
@@ -33,5 +34,3 @@ const useFetch = () => {
 
   return { data, isLoading, error, submitRequest } as const;
 }
-
-export default useFetch;

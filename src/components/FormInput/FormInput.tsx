@@ -11,7 +11,7 @@ interface Props {
   error?: FieldError,
 }
 
-const FormInput = ({ name, label, control, type = "text", error }: Props) => {
+export const FormInput = ({ name, label, control, type = "text", error }: Props) => {
   return (
     <div className="form-group">
       <label htmlFor={name}>{label}</label>
@@ -26,5 +26,3 @@ const FormInput = ({ name, label, control, type = "text", error }: Props) => {
     </div>
   )
 }
-
-export default FormInput;
