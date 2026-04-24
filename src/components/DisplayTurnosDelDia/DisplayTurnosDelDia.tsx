@@ -5,7 +5,7 @@ import "./DisplayTurnosDelDia.css";
 
 export const DisplayTurnosDelDia = () => {
   const hoy = new Date().toISOString().split("T")[0];
-  const { data: turnos, isLoading, error } = useFetchAutomatico<Turno[]>(`/turnos/fecha?fecha=${hoy}`);
+  const { data: turnos, isLoading, error } = useFetchAutomatico<Turno[]>(`/turnos/fecha?fecha=${hoy}&sortBy=inicioTurno`);
 
   return (
     <>
