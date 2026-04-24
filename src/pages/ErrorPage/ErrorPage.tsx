@@ -13,7 +13,7 @@ const ErrorPage = () => {
       <div className="container">
         <h1>Código 404 - Recurso no encontrado!</h1>
         <p>Parece que la url que intentaste utilizar <span>no existe</span>...</p>
-        <button className="btn" onClick={volver}>Volver al inicio</button>
+        <button className="btn" onClick={volver}>Volver</button>
       </div>
     </>
   )
