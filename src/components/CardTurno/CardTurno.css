@@ -1,6 +1,12 @@
 .card_container {
   display: flex;
   gap: .5rem;
+  background-color: inherit;
+  padding: .4rem;
+}
+
+.card_container--resaltado {
+  background-color: rgb(255, 253, 139);
 }
 
 .card_container__deporte {

@@ -4,18 +4,13 @@ import { useFetchAutomatico } from "../../hooks";
 import type { Cancha } from "../../models/types/cancha";
 import type { Page } from "../../models/types/page";
 import type { Turno } from "../../models/types/turno";
+import { isTurnoEnCurso } from "../../utils";
 import "./Dashboard.css";
 
 const Dashboard = () => {
   const hoy = new Date().toISOString().split("T")[0];
   const { data: turnos, isLoading: isLoadingTurnos, error: errorTurnos } = useFetchAutomatico<Turno[]>(`/turnos/fecha?fecha=${hoy}&sortBy=inicioTurno`);
   const { data: pageCancha, isLoading: isLoadingCanchas, error: errorCanchas } = useFetchAutomatico<Page<Cancha>>(`/canchas`);
-
-  const isTurnoEnCurso = (turno: Turno) => {
-    const now = new Date().getTime();
-
-    return now >= new Date(turno.inicioTurno).getTime() && now <= (new Date(turno.inicioTurno).getTime() + (turno.duracionMinutos * 60 * 1000));
-  }
 
   const turnosEnCurso = turnos ? turnos.filter(t => isTurnoEnCurso(t)) : [];
 

@@ -2,6 +2,7 @@ import type { AxiosError } from "axios";
 import type { Turno } from "../../models/types/turno";
 import { CardTurno } from "../CardTurno/CardTurno";
 import "./DisplayTurnosDelDia.css";
+import { isTurnoEnCurso } from "../../utils";
 
 interface Props {
   turnos: Turno[] | null,
@@ -21,7 +22,7 @@ export const DisplayTurnosDelDia = ({ turnos, error }: Props) => {
         )}
         {/* Mostrar turnos */}
         {turnos && turnos.map(turno => (
-          <CardTurno key={turno.id} turno={turno} />
+          <CardTurno key={turno.id} turno={turno} resaltado={isTurnoEnCurso(turno)} />
         ))}
       </div>
     </>
