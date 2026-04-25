@@ -25,8 +25,6 @@ export const FormLogIn = () => {
   // el cual guardaremos en el Local Storage
   useEffect(() => {
     if (data) {
-      console.log("entró");
-
       localStorage.setItem("token", data.token);
       navigate("/dashboard", { replace: true })
     }

@@ -3,7 +3,6 @@ import { useAuth } from "../context/AuthProvider"
 
 export const AdminGuard = () => {
   const { isLoading, user } = useAuth();
-  console.log("Entró al admin guard");
 
   if (isLoading) return (<p>Cargando...</p>)
 

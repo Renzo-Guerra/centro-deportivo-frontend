@@ -1,0 +1,17 @@
+.btn-solid {
+  background-color: #10295e;
+  text-decoration: none;
+  color: white;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-solid.active,
+.btn-solid:hover {
+  background-color: #1a439b;
+}

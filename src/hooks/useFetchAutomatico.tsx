@@ -21,11 +21,9 @@ export const useFetchAutomatico = <T,>(url: string, method: httpMethod = "get") 
     axiosInterceptor(url, config)
       .then(data => setData(data.data))
       .catch((err: AxiosError) => {
-        if (controller.signal.aborted) {
-          // La petición fue cancelada intencionalmente, no hacemos nada
-          console.log("Petición cancelada.");
-        } else {
-          // Es un error real de red o del servidor
+        if (!controller.signal.aborted) {
+          // No se canceló intencionalmente. 
+          // Quiere decir que es un error real de red o del servidor
           setError(err);
           setIsLoading(false);
         }

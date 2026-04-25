@@ -1,0 +1,18 @@
+.navbar__container {
+  padding: 1rem;
+  background-color: rgb(194, 177, 151);
+}
+
+.navbar__buttons-container {
+  display: flex;
+  gap: .3rem;
+  justify-content: center;
+  align-items: center;
+}
+
+@media screen and (min-width: 400px) {
+  .navbar__buttons-container {
+    gap: .7rem;
+    justify-content: end;
+  }
+}

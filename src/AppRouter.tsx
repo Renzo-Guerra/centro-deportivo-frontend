@@ -3,14 +3,21 @@ import LogInPage from "./pages/LogInPage/LogInPage";
 import RoutesWithNotFound from "./routes/RoutesWithNotFound";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import { AdminGuard } from "./guards/AdminGuard";
+import { Layout } from "./pages/Layout/Layout";
+import { useAuth } from "./context/AuthProvider";
 
 const AppRouter = () => {
+  const { user } = useAuth();
+
   return (
     <RoutesWithNotFound>
       <Route path="/" element={<Navigate to={"/login"} />} />
-      <Route path="/login" element={<LogInPage />} />
+      {/* En caso de que el usuario esté logueado, redireccionar al dashboard */}
+      <Route path="/login" element={user ? <Navigate to="/dashboard" /> : <LogInPage />} />
       <Route element={<AdminGuard />}>
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route element={<Layout />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Route>
       </Route>
     </RoutesWithNotFound>
   )
