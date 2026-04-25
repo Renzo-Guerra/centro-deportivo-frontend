@@ -1,10 +1,9 @@
 import { Navigate, Route } from "react-router-dom";
-import LogInPage from "./pages/LogInPage/LogInPage";
 import RoutesWithNotFound from "./routes/RoutesWithNotFound";
-import Dashboard from "./pages/Dashboard/Dashboard";
-import { AdminGuard } from "./guards/AdminGuard";
 import { Layout } from "./pages/Layout/Layout";
 import { useAuth } from "./context/AuthProvider";
+import { AdminGuard } from "./guards";
+import { Dashboard, LogInPage } from "./pages";
 
 const AppRouter = () => {
   const { user } = useAuth();

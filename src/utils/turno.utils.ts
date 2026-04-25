@@ -1,4 +1,4 @@
-import type { Turno } from "../models/types/turno";
+import type { Turno } from "../models";
 
 export const isTurnoEnCurso = (turno: Turno) => {
   const now = new Date().getTime();

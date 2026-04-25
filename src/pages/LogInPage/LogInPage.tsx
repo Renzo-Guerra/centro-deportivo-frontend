@@ -1,7 +1,7 @@
 import { FormLogIn } from "../../components";
 import "./LogInPage.css";
 
-const LogInPage = () => {
+export const LogInPage = () => {
   return (
     <main className="login-page-container">
       <section className="login-content">
@@ -10,5 +10,3 @@ const LogInPage = () => {
     </main>
   )
 }
-
-export default LogInPage;

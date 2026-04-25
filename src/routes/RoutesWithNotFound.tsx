@@ -1,6 +1,6 @@
 import type { ReactNode } from "react"
 import { Navigate, Route, Routes } from "react-router-dom"
-import ErrorPage from "../pages/ErrorPage/ErrorPage"
+import { ErrorPage } from "../pages";
 
 interface Props {
   children: ReactNode,

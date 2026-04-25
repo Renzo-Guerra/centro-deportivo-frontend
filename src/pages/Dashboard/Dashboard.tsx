@@ -1,13 +1,11 @@
 import { DisplayTurnosDelDia } from "../../components";
-import { MetricCard } from "../../components/CustomComponent/MetricCard";
+import { MetricCard } from "../../components/MetricCard/MetricCard";
 import { useFetchAutomatico } from "../../hooks";
-import type { Cancha } from "../../models/types/cancha";
-import type { Page } from "../../models/types/page";
-import type { Turno } from "../../models/types/turno";
+import type { Cancha, Page, Turno } from "../../models";
 import { isTurnoEnCurso } from "../../utils";
 import "./Dashboard.css";
 
-const Dashboard = () => {
+export const Dashboard = () => {
   const hoy = new Date().toISOString().split("T")[0];
   const { data: turnos, isLoading: isLoadingTurnos, error: errorTurnos } = useFetchAutomatico<Turno[]>(`/turnos/fecha?fecha=${hoy}&sortBy=inicioTurno`);
   const { data: pageCancha, isLoading: isLoadingCanchas, error: errorCanchas } = useFetchAutomatico<Page<Cancha>>(`/canchas`);
@@ -16,20 +14,17 @@ const Dashboard = () => {
 
   return (
     <>
-      {isLoadingTurnos || isLoadingCanchas && (
+      {isLoadingTurnos || isLoadingCanchas ? (
         <p>Cargando...</p>
-      )}
-
-      {!isLoadingTurnos && !isLoadingCanchas && (
+      ) : (
         <>
           <div className="dashboard__cards-container">
             <div className="dashboard__cards">
               <MetricCard label={"TURNOS HOY"} cantidad={turnos ? turnos.length : 0} />
               <MetricCard label={"EN CURSO"} cantidad={turnosEnCurso.length} />
-              {errorCanchas && (
+              {errorCanchas ? (
                 <p>Error al cargar las canchas</p>
-              )}
-              {!errorCanchas && (
+              ) : (
                 <>
                   <MetricCard label={"LIBRES"} cantidad={pageCancha ? pageCancha.totalElements - turnosEnCurso.length : 0} />
                   <MetricCard label={"CANCHAS"} cantidad={pageCancha ? pageCancha.totalElements : 0} />
@@ -43,5 +38,3 @@ const Dashboard = () => {
     </>
   )
 }
-
-export default Dashboard;

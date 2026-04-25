@@ -1,4 +1,4 @@
-import type { Turno } from "../../models/types/turno"
+import type { Turno } from "../../models";
 import "./CardTurno.css";
 
 interface Props {

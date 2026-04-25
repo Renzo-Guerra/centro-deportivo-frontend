@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import "./ErrorPage.css";
 
-const ErrorPage = () => {
+export const ErrorPage = () => {
   const navigate = useNavigate();
 
   const volver = () => {
@@ -18,5 +18,3 @@ const ErrorPage = () => {
     </>
   )
 }
-
-export default ErrorPage;
