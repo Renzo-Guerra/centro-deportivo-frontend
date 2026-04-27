@@ -26,8 +26,8 @@ export const Dashboard = () => {
                 <p>Error al cargar las canchas</p>
               ) : (
                 <>
-                  <MetricCard label={"LIBRES"} cantidad={pageCancha ? pageCancha.totalElements - turnosEnCurso.length : 0} />
                   <MetricCard label={"CANCHAS"} cantidad={pageCancha ? pageCancha.totalElements : 0} />
+                  <MetricCard label={"LIBRES"} cantidad={pageCancha ? pageCancha.totalElements - turnosEnCurso.length : 0} />
                 </>
               )}
             </div>
