@@ -1,0 +1,12 @@
+.cancha-display__container {
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  padding: 1rem .5rem;
+  gap: 1rem;
+  text-transform: capitalize;
+}
+
+.cancha-display__nombre {
+  flex-grow: 1;
+}

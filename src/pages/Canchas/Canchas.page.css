@@ -1,0 +1,14 @@
+.canchas-container>*:not(:last-child) {
+  border-bottom: 1px solid rgba(0, 0, 128, 0.2);
+}
+
+.canchas__action-buttons {
+  display: flex;
+  gap: .6rem;
+}
+
+.canchas__modal__action-buttons {
+  display: flex;
+  margin-top: 1rem;
+  justify-content: space-between;
+}

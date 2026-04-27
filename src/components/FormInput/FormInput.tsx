@@ -19,7 +19,7 @@ export const FormInput = ({ name, label, control, type = "text", error }: Props)
         name={name}
         control={control}
         render={({ field }) =>
-          <input {...field} id={name} type={type} className={error ? "input-error" : ""} />
+          <input {...field} value={field.value ?? ""} id={name} type={type} className={error ? "input-error" : ""} />
         }
       />
       {error && <span className="error-msg">{error.message}</span>}
