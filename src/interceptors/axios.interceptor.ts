@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toast } from "react-hot-toast";
 
 export const axiosInterceptor = axios.create({
   baseURL: "http://localhost:8080/api"
@@ -19,12 +20,15 @@ axiosInterceptor.interceptors.response.use(
   error => {
     // En caso de que haya un error y que no provenga del login, 
     // se "patea" al usuario al login
-    if (error.response && error.response.config.url != "/autenticacion/login" && error.response.status === 401) {
+    if (error.response.config.url != "/autenticacion/login" && (error.response.status == 401 || error.response.status == 403)) {
       // El token venció o es inválido según el servidor
-      console.error("El token venció o es inválido según el servidor");
-      localStorage.removeItem('token');
+      console.error("El token expiró o es inválido!");
+      toast.error("Expiró la sesión, por favor vuelva a loguearse!");
       // Redirección forzosa
-      window.location.href = '/login';
+      setTimeout(() => {
+        localStorage.removeItem('token');
+        window.location.href = '/login';
+      }, 3000);
     }
     return Promise.reject(error);
   });
