@@ -1,0 +1,44 @@
+.form-select {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.2rem;
+  width: 100%;
+}
+
+.form-select label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #374151;
+  text-align: left;
+  text-transform: capitalize;
+}
+
+.form-select select {
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.form-select select:open {
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.form-select select:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-select select.input-error {
+  border-color: #ef4444;
+}
+
+.error-msg {
+  font-size: 0.8rem;
+  color: #ef4444;
+  font-weight: 500;
+  margin-top: 0.2rem;
+}
