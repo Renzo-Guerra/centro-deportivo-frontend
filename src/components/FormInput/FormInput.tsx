@@ -1,28 +1,28 @@
-import { Controller, type Control, type FieldError } from "react-hook-form";
-import type { LogInFormValues } from "../../models";
 import type { HTMLInputTypeAttribute } from "react";
-import "./FormInput.css";
+import { Controller, type Control, type FieldError, type FieldValues, type Path } from "react-hook-form";
 
-interface Props {
-  name: keyof LogInFormValues,
-  label: string,
-  control: Control<LogInFormValues>,
-  type?: HTMLInputTypeAttribute,
-  error?: FieldError,
+interface Props<T extends FieldValues> {
+  name: Path<T>,
+  type: HTMLInputTypeAttribute,
+  control: Control<T>
+  error: FieldError | undefined,
 }
 
-export const FormInput = ({ name, label, control, type = "text", error }: Props) => {
+export const FormInput = <T extends FieldValues>({ name, type, control, error }: Props<T>) => {
   return (
-    <div className="form-group">
-      <label htmlFor={name}>{label}</label>
+    <>
+      <label htmlFor={name}>{name}: </label>
       <Controller
         name={name}
         control={control}
         render={({ field }) =>
-          <input {...field} value={field.value ?? ""} id={name} type={type} className={error ? "input-error" : ""} />
+          <input {...field} value={field.value ?? ""} type={type} name={name} id={name} />
         }
+
       />
-      {error && <span className="error-msg">{error.message}</span>}
-    </div>
+      {error && (
+        <span>Hubo un error en {name}</span>
+      )}
+    </>
   )
 }
