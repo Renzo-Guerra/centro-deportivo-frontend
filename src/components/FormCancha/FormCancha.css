@@ -1,4 +1,4 @@
-.formLogin {
+.formCancha {
   background: #ffffff;
   font-family: 'Inter', system-ui, sans-serif;
   padding: 2.5rem;
@@ -6,16 +6,11 @@
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 400px;
-  /* Ancho máximo en escritorio */
-  margin: 1rem;
-  /* Margen para móviles */
   display: flex;
   flex-direction: column;
 }
 
-.formLogin .btn {
-  background-color: #2563eb;
-  color: white;
+.formCancha .btn {
   padding: 0.8rem;
   border: none;
   border-radius: 0.5rem;
@@ -26,20 +21,40 @@
   margin-top: 1rem;
 }
 
-.formLogin .btn:hover {
+
+.formCancha .btn.btn-primary {
+  background-color: #2563eb;
+  color: white;
+}
+
+.formCancha .btn.btn-cancel {
+  background-color: #e41414;
+  color: white;
+}
+
+.formCancha .btn.btn-primary:hover {
   background-color: #1d4ed8;
 }
 
-.formLogin .btn:disabled {
+.formCancha .btn.btn-cancel:hover {
+  background-color: #be0e0e;
+}
+
+.formCancha .btn:disabled {
   background-color: #93c5fd;
   cursor: not-allowed;
 }
 
-.formLogin span {
+.formCancha span {
   text-align: center;
   font-size: 0.9rem;
 }
 
-.formLogin .error-msg {
+.formCancha .error-msg {
   color: rgb(223, 31, 47);
+}
+
+.formCancha__actionButtons {
+  display: flex;
+  justify-content: space-between;
 }

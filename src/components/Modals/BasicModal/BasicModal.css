@@ -10,16 +10,11 @@
 }
 
 .modal-content {
+  display: flex;
   background-color: rgb(241, 248, 255);
   border-radius: .8rem;
-  padding: 1rem 2rem;
+  overflow: hidden;
   margin-inline: 1rem;
   line-height: 1.5rem;
   box-shadow: 3px 3px 10px 1px rgb(33, 44, 54);
-}
-
-@media screen and (min-width: 500px) {
-  .modal-content {
-    padding: 2rem 4rem;
-  }
 }

@@ -1,5 +1,6 @@
 import type { HTMLInputTypeAttribute } from "react";
 import { Controller, type Control, type FieldError, type FieldValues, type Path } from "react-hook-form";
+import "./FormInput.css";
 
 interface Props<T extends FieldValues> {
   name: Path<T>,
@@ -11,17 +12,18 @@ interface Props<T extends FieldValues> {
 export const FormInput = <T extends FieldValues>({ name, type, control, error }: Props<T>) => {
   return (
     <>
-      <label htmlFor={name}>{name}: </label>
-      <Controller
-        name={name}
-        control={control}
-        render={({ field }) =>
-          <input {...field} value={field.value ?? ""} type={type} name={name} id={name} />
-        }
-
-      />
+      <div className="form-input">
+        <label htmlFor={name}>{name}: </label>
+        <Controller
+          name={name}
+          control={control}
+          render={({ field }) =>
+            <input {...field} value={field.value ?? ""} className={error ? "input-error" : ""} type={type} name={name} id={name} />
+          }
+        />
+      </div>
       {error && (
-        <span>Hubo un error en {name}</span>
+        <span className="error-msg ">{error.message}</span>
       )}
     </>
   )

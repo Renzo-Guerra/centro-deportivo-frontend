@@ -42,7 +42,7 @@ export const FormLogIn = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit(submitHandler)}>
+      <form className="formLogin" onSubmit={handleSubmit(submitHandler)}>
         <FormInput name={"email"} type="email" control={control} error={errors.email} />
         <FormInput name={"contrasenia"} type="password" control={control} error={errors.contrasenia} />
         <button className="btn" disabled={isLoading} type="submit">Loguearse</button>
