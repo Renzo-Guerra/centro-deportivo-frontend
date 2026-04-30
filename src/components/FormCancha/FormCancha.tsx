@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FormSelect } from "../FormSelect/FormSelect";
 
 interface Props {
-  cancha: Cancha | null,
+  cancha?: Cancha | null,
   onSubmit: (data: canchaValues) => void,
   onCancel: () => void,
 }
