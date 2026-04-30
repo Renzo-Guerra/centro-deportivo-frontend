@@ -6,12 +6,12 @@ import { useNavigate } from "react-router-dom";
 import "./FormLogIn.css";
 import { useFetchManual } from "../../hooks";
 import { FormInput } from "../FormInput/FormInput";
+import toast from "react-hot-toast";
 
 export const FormLogIn = () => {
   const {
     handleSubmit,
     control,
-    setError,
     formState: { errors }
   } = useForm<LogInFormValues>({
     resolver: zodResolver(logInSchema)
@@ -29,9 +29,11 @@ export const FormLogIn = () => {
       navigate("/dashboard", { replace: true })
     }
     if (error) {
-      setError("root", {
-        message: "Credenciales inválidas o error de conexión."
-      });
+      switch (error.status) {
+        case 401: toast.error("Credenciales inválidas!\nIntente nuevamente"); break;
+        default: toast.error("Ocurrió un error inesperado en el servidor...");
+      }
+      console.log(error);
     }
   }, [data, error])
 
