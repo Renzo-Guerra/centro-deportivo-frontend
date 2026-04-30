@@ -16,7 +16,7 @@ export const CanchasPage = () => {
   const [isModalEditActive, setIsModalEditActive] = useState<boolean>(false);
 
   useEffect(() => {
-    loadCanchas("/canchas", "get");
+    loadCanchas("/canchas", "GET");
   }, []);
 
   const onClickDelete = (cancha: Cancha) => {
@@ -37,7 +37,7 @@ export const CanchasPage = () => {
         error: (err) => err.status == 409 ? "Error: La cancha tiene turnos asignados para el futuro!" : "Opps: Error en el servidor, revise la consola!",
       }).then(() => {
         closeModal();
-        loadCanchas("/canchas", "get");
+        loadCanchas("/canchas", "GET");
       }).catch(err => {
         console.error(err);
       });
@@ -57,7 +57,7 @@ export const CanchasPage = () => {
         }
       }).then(() => {
         closeModal();
-        loadCanchas("/canchas", "get");
+        loadCanchas("/canchas", "GET");
       }).catch((err: AxiosError) => {
         console.error(err.message);
       });
@@ -92,7 +92,7 @@ export const CanchasPage = () => {
         }
       }).then(() => {
         closeModal();
-        loadCanchas("/canchas", "get");
+        loadCanchas("/canchas", "GET");
       }).catch((err: AxiosError) => {
         console.error(err.message);
       });

@@ -39,7 +39,7 @@ export const FormLogIn = () => {
 
   const submitHandler = (data: LogInFormValues) => {
     const urlLogIn = "/autenticacion/login";
-    submitRequest(urlLogIn, "post", data);
+    submitRequest(urlLogIn, "POST", data);
   }
 
   return (

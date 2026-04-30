@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { AxiosError } from "axios";
 import { axiosInterceptor } from "../interceptors";
-import type { httpMethod } from "../models";
+import type { HttpMethodType } from "../models";
 
 export const useFetchManual = <T,>() => {
   const [data, setData] = useState<T | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<AxiosError | null>(null);
 
-  const submitRequest = <E,>(url: string, method: httpMethod = "get", body?: E) => {
+  const submitRequest = <E,>(url: string, method: HttpMethodType = "GET", body?: E) => {
     const controller = new AbortController();
 
     const config = {

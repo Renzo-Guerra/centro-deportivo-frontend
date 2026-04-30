@@ -1,9 +1,9 @@
 import type { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { axiosInterceptor } from "../interceptors";
-import type { httpMethod } from "../models";
+import type { HttpMethodType } from "../models";
 
-export const useFetchAutomatico = <T,>(url: string, method: httpMethod = "get") => {
+export const useFetchAutomatico = <T,>(url: string, method: HttpMethodType = "GET") => {
   const [data, setData] = useState<T | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<AxiosError | null>(null);
