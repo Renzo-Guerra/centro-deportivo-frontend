@@ -18,17 +18,26 @@ axiosInterceptor.interceptors.request.use(request => {
 axiosInterceptor.interceptors.response.use(
   response => response,
   error => {
+    console.error(error);
     // En caso de que haya un error y que no provenga del login, 
     // se "patea" al usuario al login
-    if (error.response.config.url != "/autenticacion/login" && (error.response.status == 401 || error.response.status == 403)) {
-      // El token venció o es inválido según el servidor
-      console.error("El token expiró o es inválido!");
-      toast.error("Expiró la sesión, por favor vuelva a loguearse!");
-      // Redirección forzosa
-      setTimeout(() => {
-        localStorage.removeItem('token');
-        window.location.href = '/login';
-      }, 3000);
+    if (error.response.config.url == "/autenticacion/login") {
+      return Promise.reject(error);
+    }
+
+    switch (error.response.status) {
+      case 401: {
+        // El token venció o es inválido según el servidor
+        toast.error("Expiró la sesión, por favor vuelva a loguearse!");
+        // Redirección forzosa
+        setTimeout(() => {
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+        }, 3000);
+      }; break;
+      case 403: {
+        toast.error("Permisos insuficientes!");
+      }; break;
     }
     return Promise.reject(error);
   });

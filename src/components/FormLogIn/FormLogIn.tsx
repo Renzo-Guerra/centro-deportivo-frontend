@@ -33,7 +33,6 @@ export const FormLogIn = () => {
         case 401: toast.error("Credenciales inválidas!\nIntente nuevamente"); break;
         default: toast.error("Ocurrió un error inesperado en el servidor...");
       }
-      console.log(error);
     }
   }, [data, error])
 
