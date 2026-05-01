@@ -25,7 +25,6 @@ export const useFetchAutomatico = <T,>(url: string, method: HttpMethodType = "GE
           // No se canceló intencionalmente. 
           // Quiere decir que es un error real de red o del servidor
           setError(err);
-          setIsLoading(false);
         }
       })
       .finally(() => {
