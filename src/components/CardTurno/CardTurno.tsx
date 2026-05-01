@@ -1,5 +1,5 @@
 import type { Turno } from "../../models";
-import { addDeporteClass } from "../../utils";
+import { addDeporteClass, formatDateTime } from "../../utils";
 import "./CardTurno.css";
 
 interface Props {
@@ -19,7 +19,7 @@ export const CardTurno = ({ turno, resaltado = false }: Props) => {
           <p className="datos__cancha">{turno.deporte.toLowerCase()} - {turno.nombreCancha}</p>
         </div>
         <div className="card_container__horarios">
-          <span>{new Date(turno.inicioTurno).toLocaleTimeString([], { hour12: false }).split(":").slice(0, 2).join(":")}</span>
+          <span>{formatDateTime(turno.inicioTurno)}</span>
           <span>{turno.duracionMinutos} min</span>
         </div>
       </div>
