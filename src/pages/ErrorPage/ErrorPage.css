@@ -1,14 +1,21 @@
-.container p {
+.error-page__container {
+  display: grid;
+  padding: 1rem;
+  text-align: center;
+  justify-items: center;
+}
+
+.error-page__container p {
   font-size: 2rem;
   color: rgb(230, 19, 30);
 }
 
-.container span {
+.error-page__container span {
   font-size: 2rem;
   font-weight: 700;
 }
 
-.btn {
+.error-page__container .btn {
   background-color: #2563eb;
   color: white;
   padding: 0.8rem;
@@ -18,9 +25,10 @@
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.2s;
-  margin-top: 1rem;
+  margin-top: 3rem;
+  width: fit-content;
 }
 
-.btn:hover {
+.error-page__container .btn:hover {
   background-color: #1d4ed8;
 }
