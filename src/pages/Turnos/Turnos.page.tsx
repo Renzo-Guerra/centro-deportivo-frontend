@@ -1,16 +1,43 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useFetchManual } from "../../hooks";
 import type { Page, Turno } from "../../models";
 import "./turnos.page.css";
-import { TurnoDisplay } from "../../components";
+import { BasicModal, TurnoDisplay } from "../../components";
+import toast from "react-hot-toast";
+import { axiosInterceptor } from "../../interceptors";
 
 export const TurnosPage = () => {
   const { data: pageTurno, isLoading, error, submitRequest: loadTurnos } = useFetchManual<Page<Turno>>();
+  const [selectedTurno, setSelectedTurno] = useState<Turno | null>(null);
+  const [isModalDeleteActive, setIsModalDeleteActive] = useState<boolean>(false);
 
   useEffect(() => {
     loadTurnos("/turnos", "GET");
   }, []);
 
+  const onClickDelete = (turno: Turno) => {
+    setSelectedTurno(turno);
+    setIsModalDeleteActive(true);
+  }
+
+  const submitDelete = (id: number) => {
+    toast.promise(async () => axiosInterceptor.delete("/turnos/" + id),
+      {
+        loading: "Enviando",
+        success: "Turno eliminado exitosamente!",
+        error: (err) => err.status != 403 ? err.message : "",
+      }).then(() => {
+        closeModal();
+        loadTurnos("/turnos", "GET");
+      }).catch(err => {
+        console.error(err);
+      });
+  }
+
+  const closeModal = () => {
+    setSelectedTurno(null);
+    setIsModalDeleteActive(false);
+  }
 
   return (
     <>
@@ -32,11 +59,23 @@ export const TurnosPage = () => {
               <div className="turnos-page__action-buttons">
                 <button>Info</button>
                 <button>Editar</button>
-                <button>Eliminar</button>
+                <button onClick={() => onClickDelete(turno)}>Eliminar</button>
               </div>
             </TurnoDisplay>
           ))}
         </div>
+      )}
+
+      {isModalDeleteActive && (
+        <BasicModal>
+          <div className="turnos__modal">
+            <p>¿Estás seguro que quieres eliminar el turno de "{selectedTurno?.nombreCliente} {selectedTurno?.apellidoCliente}"?</p>
+            <div className="turnos__modal__action-buttons">
+              <button onClick={closeModal}>Cancelar</button>
+              <button onClick={() => selectedTurno ? submitDelete(selectedTurno.id) : ""}>Eliminar</button>
+            </div>
+          </div>
+        </BasicModal>
       )}
     </>
   )

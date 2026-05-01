@@ -10,3 +10,14 @@
   align-items: center;
   gap: 1rem;
 }
+
+.turnos__modal {
+  padding: 1rem;
+  background-color: rgb(224, 229, 233);
+}
+
+.turnos__modal__action-buttons {
+  display: flex;
+  margin-top: 1rem;
+  justify-content: space-between;
+}
