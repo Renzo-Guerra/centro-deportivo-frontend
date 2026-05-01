@@ -3,7 +3,7 @@ import RoutesWithNotFound from "./routes/RoutesWithNotFound";
 import { Layout } from "./pages/Layout/Layout";
 import { useAuth } from "./context/AuthProvider";
 import { AdminGuard } from "./guards";
-import { CanchasPage, Dashboard, LogInPage } from "./pages";
+import { CanchasPage, Dashboard, LogInPage, TurnosPage } from "./pages";
 import type { ReactNode } from "react";
 
 interface Props {
@@ -24,6 +24,7 @@ const AppRouter = ({ children }: Props) => {
           <Route element={<Layout />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/canchas" element={<CanchasPage />} />
+            <Route path="/turnos" element={<TurnosPage />} />
           </Route>
         </Route>
       </RoutesWithNotFound>

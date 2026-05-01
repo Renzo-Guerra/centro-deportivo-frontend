@@ -9,3 +9,4 @@ export * from "./LinkButton/LinkButton";
 export * from "./MetricCard/MetricCard";
 export * from "./Modals/BasicModal/BasicModal";
 export * from "./NavBar/NavBar";
+export * from "./TurnoDisplay/TurnoDisplay";

@@ -1,0 +1,72 @@
+.turno-display__container {
+  display: grid;
+  gap: 1rem;
+  background-color: inherit;
+  padding: 1rem;
+  background-color: rgb(249, 255, 255);
+  border-radius: .5rem;
+}
+
+.turno-display__container.futbol {
+  border-left: solid 2px rgb(189, 0, 0);
+}
+
+.turno-display__container.padel {
+  border-left: solid 2px rgb(0, 153, 0);
+}
+
+.turno-display__container.tenis {
+  border-left: solid 2px rgb(34, 0, 156);
+}
+
+.turno-display__container.voley {
+  border-left: solid 2px rgb(109, 0, 156);
+}
+
+.turno-display__info {
+  display: flex;
+  gap: .5rem;
+}
+
+.turno-display__cliente {
+  text-transform: capitalize;
+  flex-grow: 1;
+  font-size: .9rem;
+  display: grid;
+  gap: .5rem;
+  align-items: end;
+  justify-items: start;
+}
+
+.turno-display__cliente__nombre {
+  flex-grow: 1;
+}
+
+.turno-display__cliente__cliente {
+  color: rgb(11, 72, 240);
+}
+
+.turno-display__cliente__cancha {
+  color: rgb(113, 115, 121);
+}
+
+.turno-display__horarios {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.turno-display__horarios__fecha {
+  font-size: .8rem;
+}
+
+.turno-display__horarios__horario {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: rgb(97, 60, 233);
+}
+
+.turno-display__horarios__duracion {
+  font-size: .8rem;
+  color: rgb(113, 115, 121);
+}

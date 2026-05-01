@@ -1,4 +1,5 @@
 import type { Turno } from "../../models";
+import { addDeporteClass } from "../../utils";
 import "./CardTurno.css";
 
 interface Props {
@@ -7,19 +8,10 @@ interface Props {
 }
 
 export const CardTurno = ({ turno, resaltado = false }: Props) => {
-  const addDeporteClass = () => {
-    switch (turno.deporte) {
-      case "FUTBOL": return "futbol";
-      case "VOLEY": return "voley";
-      case "TENIS": return "tenis";
-      case "PADEL": return "padel";
-      default: return "";
-    }
-  }
   return (
     <>
       <div className={`card_container ${resaltado ? "card_container--resaltado" : ""}`}>
-        <div className={`card_container__deporte ${addDeporteClass()}`} >
+        <div className={`card_container__deporte ${addDeporteClass(turno)}`} >
           {turno.deporte[0]}
         </div>
         <div className="card_container__datos">
