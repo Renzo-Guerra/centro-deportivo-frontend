@@ -44,8 +44,8 @@ export const FormLogIn = () => {
   return (
     <>
       <form className="formLogin" onSubmit={handleSubmit(submitHandler)}>
-        <FormInput name={"email"} type="email" control={control} error={errors.email} />
-        <FormInput name={"contrasenia"} type="password" control={control} error={errors.contrasenia} />
+        <FormInput name={"email"} label="Email" type="email" control={control} error={errors.email} />
+        <FormInput name={"contrasenia"} label="Contraseña" type="password" control={control} error={errors.contrasenia} />
         <button className="btn" disabled={isLoading} type="submit">Loguearse</button>
         {errors.root && (
           <span className="error-msg">{errors.root.message}</span>

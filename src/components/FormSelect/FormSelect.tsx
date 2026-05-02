@@ -3,16 +3,17 @@ import "./FormSelect.css";
 
 interface Props<T extends FieldValues> {
   name: Path<T>,
+  label: string,
   control: Control<T>
   values: (string | number)[],
   error: FieldError | undefined,
 }
 
-export const FormSelect = <T extends FieldValues>({ name, control, values, error }: Props<T>) => {
+export const FormSelect = <T extends FieldValues>({ name, label, control, values, error }: Props<T>) => {
   return (
     <>
       <div className="form-select">
-        <label htmlFor={name}>{name}: </label>
+        <label htmlFor={name}>{label}: </label>
         <Controller
           name={name}
           control={control}

@@ -4,16 +4,17 @@ import "./FormInput.css";
 
 interface Props<T extends FieldValues> {
   name: Path<T>,
+  label: string,
   type: HTMLInputTypeAttribute,
   control: Control<T>
   error: FieldError | undefined,
 }
 
-export const FormInput = <T extends FieldValues>({ name, type, control, error }: Props<T>) => {
+export const FormInput = <T extends FieldValues>({ name, label, type, control, error }: Props<T>) => {
   return (
     <>
       <div className="form-input">
-        <label htmlFor={name}>{name}: </label>
+        <label htmlFor={name}>{label}: </label>
         <Controller
           name={name}
           control={control}
