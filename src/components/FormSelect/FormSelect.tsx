@@ -1,15 +1,17 @@
 import { Controller, type Control, type FieldError, type FieldValues, type Path } from "react-hook-form";
 import "./FormSelect.css";
+import type { OptionForSelect } from "../../models/types/optionForSelect";
 
 interface Props<T extends FieldValues> {
   name: Path<T>,
   label: string,
   control: Control<T>
-  values: (string | number)[],
+  options: OptionForSelect[],
   error: FieldError | undefined,
+  isDisabled?: boolean,
 }
 
-export const FormSelect = <T extends FieldValues>({ name, label, control, values, error }: Props<T>) => {
+export const FormSelect = <T extends FieldValues>({ name, label, control, options, error, isDisabled = false }: Props<T>) => {
   return (
     <>
       <div className="form-select">
@@ -18,9 +20,9 @@ export const FormSelect = <T extends FieldValues>({ name, label, control, values
           name={name}
           control={control}
           render={({ field }) =>
-            <select {...field} id={name} className={error ? "input-error" : ""}>
-              {values.map(value => (
-                <option key={value} value={value}>{value}</option>
+            <select {...field} id={name} className={error ? "input-error" : ""} disabled={isDisabled}>
+              {options.map(option => (
+                <option key={option.value} value={option.value}>{option.label}</option>
               ))}
             </select>
           }

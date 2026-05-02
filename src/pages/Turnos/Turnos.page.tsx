@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react";
 import { useFetchManual } from "../../hooks";
-import type { Page, Turno } from "../../models";
+import type { Page, Turno, turnoValues } from "../../models";
 import "./turnos.page.css";
-import { BasicModal, TurnoDisplay } from "../../components";
+import { BasicModal, FormTurno, TurnoDisplay } from "../../components";
 import toast from "react-hot-toast";
 import { axiosInterceptor } from "../../interceptors";
+import type { AxiosError } from "axios";
+import { formatDateTime } from "../../utils";
 
 export const TurnosPage = () => {
   const { data: pageTurno, isLoading, error, submitRequest: loadTurnos } = useFetchManual<Page<Turno>>();
   const [selectedTurno, setSelectedTurno] = useState<Turno | null>(null);
   const [isModalDeleteActive, setIsModalDeleteActive] = useState<boolean>(false);
+  const [isModalEditActive, setIsModalEditActive] = useState<boolean>(false);
 
   useEffect(() => {
     loadTurnos("/turnos", "GET");
@@ -34,9 +37,40 @@ export const TurnosPage = () => {
       });
   }
 
+  const onClickEdit = (turno: Turno) => {
+    setSelectedTurno(turno);
+    setIsModalEditActive(true);
+  }
+
+  const hasSameValues = (turno: Turno | null, newData: turnoValues) => {
+    return (
+      turno &&
+      turno.nombreCliente === newData.nombreCliente &&
+      turno.apellidoCliente === newData.apellidoCliente &&
+      turno.celularCliente === newData.celularCliente &&
+      turno.deporte === newData.deporte &&
+      turno.idCancha.toString() === newData.idCancha &&
+      formatDateTime(turno.inicioTurno) === newData.inicioTurno &&
+      turno.duracionMinutos === newData.duracionTurnoMinutos
+    );
+  }
+
+  const submitEdit = (data: turnoValues) => {
+    // Fast ending en caso de que no se hayan editado los valores
+    if (hasSameValues(selectedTurno, data)) {
+      toast.error("Primero debe editar los datos!");
+      return;
+    }
+
+
+    // TODO: Implementar comunicacion con el back-end
+    toast.success("To do: Implementar PUT: canchas/{id}")
+  }
+
   const closeModal = () => {
     setSelectedTurno(null);
     setIsModalDeleteActive(false);
+    setIsModalEditActive(false);
   }
 
   return (
@@ -58,7 +92,7 @@ export const TurnosPage = () => {
             <TurnoDisplay key={turno.id} turno={turno} >
               <div className="turnos-page__action-buttons">
                 <button>Info</button>
-                <button>Editar</button>
+                <button onClick={() => onClickEdit(turno)}>Editar</button>
                 <button onClick={() => onClickDelete(turno)}>Eliminar</button>
               </div>
             </TurnoDisplay>
@@ -75,6 +109,12 @@ export const TurnosPage = () => {
               <button onClick={() => selectedTurno ? submitDelete(selectedTurno.id) : ""}>Eliminar</button>
             </div>
           </div>
+        </BasicModal>
+      )}
+
+      {isModalEditActive && (
+        <BasicModal>
+          <FormTurno turno={selectedTurno} onSubmit={(data: turnoValues) => submitEdit(data)} onCancel={closeModal} />
         </BasicModal>
       )}
     </>

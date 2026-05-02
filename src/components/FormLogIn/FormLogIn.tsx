@@ -14,7 +14,11 @@ export const FormLogIn = () => {
     control,
     formState: { errors }
   } = useForm<LogInFormValues>({
-    resolver: zodResolver(logInSchema)
+    resolver: zodResolver(logInSchema),
+    defaultValues: {
+      email: "",
+      contrasenia: "",
+    }
   });
 
   const navigate = useNavigate();

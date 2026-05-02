@@ -1,5 +1,5 @@
 import type { HTMLInputTypeAttribute } from "react";
-import { Controller, type Control, type FieldError, type FieldValues, type Path } from "react-hook-form";
+import { Controller, type Control, type FieldError, type FieldErrorsImpl, type FieldValues, type Merge, type Path } from "react-hook-form";
 import "./FormInput.css";
 
 interface Props<T extends FieldValues> {
@@ -7,10 +7,11 @@ interface Props<T extends FieldValues> {
   label: string,
   type: HTMLInputTypeAttribute,
   control: Control<T>
-  error: FieldError | undefined,
+  error: FieldError | Merge<FieldError, FieldErrorsImpl<any>> | undefined,
+  isDisabled?: boolean,
 }
 
-export const FormInput = <T extends FieldValues>({ name, label, type, control, error }: Props<T>) => {
+export const FormInput = <T extends FieldValues>({ name, label, type, control, error, isDisabled = false }: Props<T>) => {
   return (
     <>
       <div className="form-input">
@@ -19,12 +20,12 @@ export const FormInput = <T extends FieldValues>({ name, label, type, control, e
           name={name}
           control={control}
           render={({ field }) =>
-            <input {...field} value={field.value ?? ""} className={error ? "input-error" : ""} type={type} name={name} id={name} />
+            <input {...field} value={field.value ?? ""} className={error ? "input-error" : ""} type={type} name={name} id={name} disabled={isDisabled} />
           }
         />
       </div>
       {error && (
-        <span className="error-msg ">{error.message}</span>
+        <span className="error-msg ">{JSON.stringify(error.message)}</span>
       )}
     </>
   )

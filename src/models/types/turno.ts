@@ -1,3 +1,5 @@
+import type { Tipos_Cancha } from "./cancha";
+
 export interface Turno {
   id: number,
   nombreCliente: string,
@@ -8,5 +10,5 @@ export interface Turno {
   duracionMinutos: number,
   idCancha: number,
   nombreCancha: string,
-  deporte: string,
+  deporte: Tipos_Cancha,
 }

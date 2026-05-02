@@ -5,6 +5,7 @@ export * from "./FormCancha/FormCancha";
 export * from "./FormInput/FormInput";
 export * from "./FormLogIn/FormLogIn";
 export * from "./FormSelect/FormSelect";
+export * from "./FormTurno/FormTurno";
 export * from "./LinkButton/LinkButton";
 export * from "./MetricCard/MetricCard";
 export * from "./Modals/BasicModal/BasicModal";
