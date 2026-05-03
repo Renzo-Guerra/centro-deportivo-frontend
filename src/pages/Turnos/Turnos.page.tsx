@@ -63,8 +63,22 @@ export const TurnosPage = () => {
     }
 
 
-    // TODO: Implementar comunicacion con el back-end
-    toast.success("To do: Implementar PUT: canchas/{id}")
+    toast.promise(async () => axiosInterceptor.put("/turnos/" + selectedTurno?.id, data),
+      {
+        loading: "Enviando",
+        success: "Turno editado exitosamente!",
+        error: (err) => {
+          switch (err.status) {
+            case 400: return `Error: Parametros invalidos`;
+            default: return "Opps: Error en el servidor, revise la consola!";
+          }
+        }
+      }).then(() => {
+        closeModal();
+        loadTurnos("/turnos", "GET");
+      }).catch((err: AxiosError) => {
+        console.error(err.message);
+      });
   }
 
   const closeModal = () => {
