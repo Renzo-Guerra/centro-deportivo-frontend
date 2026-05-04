@@ -23,10 +23,10 @@ export const FormInput = <T extends FieldValues>({ name, label, type, control, e
             <input {...field} value={field.value ?? ""} className={error ? "input-error" : ""} type={type} name={name} id={name} disabled={isDisabled} />
           }
         />
+        {error && (
+          <span className="error-msg ">{JSON.stringify(error.message)}</span>
+        )}
       </div>
-      {error && (
-        <span className="error-msg ">{JSON.stringify(error.message)}</span>
-      )}
     </>
   )
 }

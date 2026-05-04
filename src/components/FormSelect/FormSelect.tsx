@@ -27,10 +27,10 @@ export const FormSelect = <T extends FieldValues>({ name, label, control, option
             </select>
           }
         />
+        {error && (
+          <span className="error-msg ">{error.message}</span>
+        )}
       </div>
-      {error && (
-        <span className="error-msg ">{error.message}</span>
-      )}
     </>
   )
 }
