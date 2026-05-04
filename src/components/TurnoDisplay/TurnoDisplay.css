@@ -40,14 +40,18 @@
 
 .turno-display__cliente__nombre {
   flex-grow: 1;
+  color: rgb(11, 72, 240);
+  font-size: 1.1rem;
 }
 
-.turno-display__cliente__cliente {
-  color: rgb(11, 72, 240);
-}
 
 .turno-display__cliente__cancha {
   color: rgb(113, 115, 121);
+  font-size: 0.9rem;
+}
+
+.turno-display__cliente__celular {
+  font-size: 0.8rem;
 }
 
 .turno-display__horarios {

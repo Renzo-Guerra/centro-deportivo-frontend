@@ -109,7 +109,6 @@ export const TurnosPage = () => {
           {pageTurno?.content.map(turno => (
             <TurnoDisplay key={turno.id} turno={turno} >
               <div className="turnos-page__action-buttons">
-                <button>Info</button>
                 <button onClick={() => onClickEdit(turno)}>Editar</button>
                 <button onClick={() => onClickDelete(turno)}>Eliminar</button>
               </div>

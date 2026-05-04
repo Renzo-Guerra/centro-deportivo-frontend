@@ -101,8 +101,8 @@ export const CanchasPage = () => {
           {pageCancha?.content.map(cancha => (
             <CanchaDisplay key={cancha.id} cancha={cancha} >
               <div className="canchas__action-buttons">
-                <button onClick={() => onClickDelete(cancha)}>Eliminar</button>
                 <button onClick={() => onClickEdit(cancha)}>Editar</button>
+                <button onClick={() => onClickDelete(cancha)}>Eliminar</button>
               </div>
             </CanchaDisplay>
           ))}

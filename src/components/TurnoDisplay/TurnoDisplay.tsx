@@ -17,6 +17,7 @@ export const TurnoDisplay = ({ turno, children }: Props) => {
           <div className="turno-display__cliente">
             <p className="turno-display__cliente__nombre">{turno.nombreCliente} {turno.apellidoCliente}</p>
             <p className="turno-display__cliente__cancha">{turno.deporte.toLowerCase()} - {turno.nombreCancha}</p>
+            <p className="turno-display__cliente__celular">Cel: {turno.celularCliente}</p>
           </div>
           <div className="turno-display__horarios">
             <span className="turno-display__horarios__horario">{formatDateTime(turno.inicioTurno).split("T")[1]}</span>
