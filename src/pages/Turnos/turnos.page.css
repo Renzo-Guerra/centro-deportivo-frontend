@@ -5,6 +5,13 @@
   background-color: rgb(241, 241, 241);
 }
 
+.turnos_page__agregarCanchaBtn {
+  display: flex;
+  padding: .4rem;
+  margin: 1rem;
+  cursor: pointer;
+}
+
 .turnos-page__action-buttons {
   display: flex;
   align-items: center;

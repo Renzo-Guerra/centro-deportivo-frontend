@@ -5,12 +5,12 @@ import "./turnos.page.css";
 import { BasicModal, FormTurno, TurnoDisplay } from "../../components";
 import toast from "react-hot-toast";
 import { axiosInterceptor } from "../../interceptors";
-import type { AxiosError } from "axios";
 import { formatDateTime } from "../../utils";
 
 export const TurnosPage = () => {
   const { data: pageTurno, isLoading, error, submitRequest: loadTurnos } = useFetchManual<Page<Turno>>();
   const [selectedTurno, setSelectedTurno] = useState<Turno | null>(null);
+  const [isModalAddActive, setIsModalAddActive] = useState<boolean>(false);
   const [isModalDeleteActive, setIsModalDeleteActive] = useState<boolean>(false);
   const [isModalEditActive, setIsModalEditActive] = useState<boolean>(false);
 
@@ -28,12 +28,9 @@ export const TurnosPage = () => {
       {
         loading: "Enviando",
         success: "Turno eliminado exitosamente!",
-        error: (err) => err.status != 403 ? err.message : "",
       }).then(() => {
         closeModal();
         loadTurnos("/turnos", "GET");
-      }).catch(err => {
-        console.error(err);
       });
   }
 
@@ -67,22 +64,29 @@ export const TurnosPage = () => {
       {
         loading: "Enviando",
         success: "Turno editado exitosamente!",
-        error: (err) => {
-          switch (err.status) {
-            case 400: return `Error: Parametros invalidos`;
-            default: return "Opps: Error en el servidor, revise la consola!";
-          }
-        }
       }).then(() => {
         closeModal();
         loadTurnos("/turnos", "GET");
-      }).catch((err: AxiosError) => {
-        console.error(err.message);
       });
+  }
+
+  const submitAdd = (data: turnoValues) => {
+    // TODO: El turno se crea, pero el problema es si se superpone con otros turnos...
+    toast.promise(async () => axiosInterceptor.post("/turnos", data),
+      {
+        loading: "Enviando",
+        success: "Turno creado exitosamente!",
+        // No es necesario un error porque axiosInterceptor lo maneja
+      }).then(() => {
+        closeModal();
+        loadTurnos("/turnos", "GET");
+      });
+    // No es necesario el catch ya que el axiosInterceptor lo maneja
   }
 
   const closeModal = () => {
     setSelectedTurno(null);
+    setIsModalAddActive(false);
     setIsModalDeleteActive(false);
     setIsModalEditActive(false);
   }
@@ -96,7 +100,7 @@ export const TurnosPage = () => {
       {!isLoading && error && (
         <p>{error.message}</p>
       )}
-
+      <button className="turnos_page__agregarCanchaBtn" onClick={() => setIsModalAddActive(true)}>Agregar turno</button>
       {!isLoading && !error && (
         <div className="turnos-container">
           {pageTurno?.totalElements == 0 && (
@@ -126,9 +130,20 @@ export const TurnosPage = () => {
         </BasicModal>
       )}
 
+      {isModalAddActive && (
+        <BasicModal>
+          <FormTurno
+            onSubmit={(data: turnoValues) => submitAdd(data)}
+            onCancel={closeModal} />
+        </BasicModal>
+      )}
+
       {isModalEditActive && (
         <BasicModal>
-          <FormTurno turno={selectedTurno} onSubmit={(data: turnoValues) => submitEdit(data)} onCancel={closeModal} />
+          <FormTurno
+            turno={selectedTurno}
+            onSubmit={(data: turnoValues) => submitEdit(data)}
+            onCancel={closeModal} />
         </BasicModal>
       )}
     </>

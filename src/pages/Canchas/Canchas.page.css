@@ -1,7 +1,7 @@
 .canchas_page__agregarCanchaBtn {
   display: flex;
   padding: .4rem;
-  margin: 1rem 0 0 0.5rem;
+  margin: 1rem;
   cursor: pointer;
 }
 

@@ -6,7 +6,6 @@ import "./Canchas.page.css";
 import toast from "react-hot-toast";
 import { axiosInterceptor } from "../../interceptors";
 import { FormCancha } from "../../components/FormCancha/FormCancha";
-import type { AxiosError } from "axios";
 
 export const CanchasPage = () => {
   const { data: pageCancha, isLoading, error, submitRequest: loadCanchas } = useFetchManual<Page<Cancha>>();
@@ -34,12 +33,9 @@ export const CanchasPage = () => {
       {
         loading: "Enviando",
         success: "Cancha eliminada exitosamente!",
-        error: (err) => err.status == 409 ? "Error: La cancha tiene turnos asignados para el futuro!" : "Opps: Error en el servidor, revise la consola!",
       }).then(() => {
         closeModal();
         loadCanchas("/canchas", "GET");
-      }).catch(err => {
-        console.error(err);
       });
   }
 
@@ -48,18 +44,9 @@ export const CanchasPage = () => {
       {
         loading: "Enviando",
         success: "Cancha creada exitosamente!",
-        error: (err) => {
-          switch (err.status) {
-            case 409: return "Error: La cancha tiene turnos asignados para el futuro!";
-            case 400: return `Error: Parametros invalidos`;
-            default: return "Opps: Error en el servidor, revise la consola!";
-          }
-        }
       }).then(() => {
         closeModal();
         loadCanchas("/canchas", "GET");
-      }).catch((err: AxiosError) => {
-        console.error(err.message);
       });
   }
 
@@ -83,18 +70,9 @@ export const CanchasPage = () => {
       {
         loading: "Enviando",
         success: "Cancha editada exitosamente!",
-        error: (err) => {
-          switch (err.status) {
-            case 409: return "Error: La cancha tiene turnos asignados para el futuro!";
-            case 400: return `Error: Parametros invalidos`;
-            default: return "Opps: Error en el servidor, revise la consola!";
-          }
-        }
       }).then(() => {
         closeModal();
         loadCanchas("/canchas", "GET");
-      }).catch((err: AxiosError) => {
-        console.error(err.message);
       });
   }
 
@@ -104,7 +82,6 @@ export const CanchasPage = () => {
     setIsModalDeleteActive(false);
     setIsModalEditActive(false);
   }
-
 
   return (
     <>
@@ -146,12 +123,17 @@ export const CanchasPage = () => {
 
       {isModalAddActive && (
         <BasicModal>
-          <FormCancha onSubmit={(data: canchaValues) => submitAdd(data)} onCancel={closeModal} />
+          <FormCancha
+            onSubmit={(data: canchaValues) => submitAdd(data)}
+            onCancel={closeModal} />
         </BasicModal>
       )}
       {isModalEditActive && (
         <BasicModal>
-          <FormCancha cancha={selectedCancha} onSubmit={(data: canchaValues) => submitEdit(data)} onCancel={closeModal} />
+          <FormCancha
+            cancha={selectedCancha}
+            onSubmit={(data: canchaValues) => submitEdit(data)}
+            onCancel={closeModal} />
         </BasicModal>
       )}
     </>

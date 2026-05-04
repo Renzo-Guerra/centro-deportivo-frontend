@@ -18,7 +18,7 @@ axiosInterceptor.interceptors.request.use(request => {
 axiosInterceptor.interceptors.response.use(
   response => response,
   error => {
-    console.error(error);
+    console.error(error.response);
     // En caso de que haya un error y que no provenga del login, 
     // se "patea" al usuario al login
     if (error.response.config.url == "/autenticacion/login") {
@@ -38,6 +38,9 @@ axiosInterceptor.interceptors.response.use(
       case 403: {
         toast.error("Permisos insuficientes!");
       }; break;
+      default: {
+        toast.error(error.response.data.error);
+      }
     }
     return Promise.reject(error);
   });
