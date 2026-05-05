@@ -118,7 +118,7 @@ export const TurnosPage = () => {
       )}
 
       {isModalDeleteActive && (
-        <BasicModal>
+        <BasicModal titulo="Eliminar turno" closeModal={closeModal}>
           <div className="turnos__modal">
             <p>¿Estás seguro que quieres eliminar el turno de "{selectedTurno?.nombreCliente} {selectedTurno?.apellidoCliente}"?</p>
             <div className="turnos__modal__action-buttons">
@@ -130,7 +130,7 @@ export const TurnosPage = () => {
       )}
 
       {isModalAddActive && (
-        <BasicModal>
+        <BasicModal titulo="Crear turno" closeModal={closeModal}>
           <FormTurno
             onSubmit={(data: turnoValues) => submitAdd(data)}
             onCancel={closeModal} />
@@ -138,7 +138,7 @@ export const TurnosPage = () => {
       )}
 
       {isModalEditActive && (
-        <BasicModal>
+        <BasicModal titulo="Editar turno" closeModal={closeModal}>
           <FormTurno
             turno={selectedTurno}
             onSubmit={(data: turnoValues) => submitEdit(data)}

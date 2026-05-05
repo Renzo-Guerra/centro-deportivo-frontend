@@ -12,8 +12,10 @@ export const CanchaDisplay = ({ cancha, children }: Props) => {
   return (
     <>
       <div className="cancha-display__container">
-        <span className="cancha-display__deporte">{cancha.tipo.toLowerCase()}</span>
-        <span className="cancha-display__nombre">{cancha.nombre}</span>
+        <div className="cancha-display__info">
+          <span className="cancha-display__info__deporte">{cancha.tipo.toLowerCase()}</span>
+          <span className="cancha-display__info__nombre">{cancha.nombre}</span>
+        </div>
         {children}
       </div>
     </>

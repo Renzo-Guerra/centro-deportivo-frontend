@@ -10,8 +10,9 @@
 }
 
 .canchas__modal {
-  padding: 1rem;
-  background-color: rgb(224, 229, 233);
+  display: grid;
+  gap: 1.5rem;
+  background-color: inherit;
 }
 
 .canchas__action-buttons {

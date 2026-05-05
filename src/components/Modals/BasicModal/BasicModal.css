@@ -16,10 +16,39 @@
 
 .modal-content {
   display: flex;
+  flex-direction: column;
+  width: calc(100% - 2rem);
+  max-width: 600px;
   background-color: rgb(241, 248, 255);
-  border-radius: .8rem;
-  overflow: hidden;
-  margin-inline: 1rem;
+  border-radius: .2rem;
+  overflow: auto;
   line-height: 1.5rem;
   box-shadow: 3px 3px 10px 1px rgb(33, 44, 54);
+}
+
+.modal-content__header {
+  display: flex;
+  width: auto;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1rem 0.2rem 1rem;
+  background-color: inherit;
+}
+
+.modal-content__closeModalBtn {
+  cursor: pointer;
+  padding: .5rem;
+  border: none;
+  background-color: #e41414;
+  border-radius: 10rem;
+  width: 1.9rem;
+  height: 1.9rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content__children-container {
+  padding: 1rem;
+  background-color: inherit;
 }

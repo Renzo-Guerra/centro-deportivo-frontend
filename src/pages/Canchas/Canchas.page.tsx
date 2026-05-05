@@ -1,18 +1,21 @@
 import { useEffect, useState } from "react";
-import { CanchaDisplay, BasicModal } from "../../components";
+import { CanchaDisplay, BasicModal, TurnoDisplay } from "../../components";
 import { useFetchManual } from "../../hooks";
-import type { Cancha, canchaValues, Page } from "../../models";
+import type { Cancha, canchaValues, Page, Turno } from "../../models";
 import "./Canchas.page.css";
 import toast from "react-hot-toast";
 import { axiosInterceptor } from "../../interceptors";
 import { FormCancha } from "../../components/FormCancha/FormCancha";
 
 export const CanchasPage = () => {
-  const { data: pageCancha, isLoading, error, submitRequest: loadCanchas } = useFetchManual<Page<Cancha>>();
+  const { data: pageCancha, isLoading: isLoadingCanchas, error: errorCanchas, submitRequest: loadCanchas } = useFetchManual<Page<Cancha>>();
+  const { data: pageTurno, isLoading: isLoadingTurnos, error: errorTurnos, submitRequest: loadTurnos } = useFetchManual<Page<Turno>>();
+
   const [selectedCancha, setSelectedCancha] = useState<Cancha | null>(null);
   const [isModalAddActive, setIsModalAddActive] = useState<boolean>(false);
   const [isModalDeleteActive, setIsModalDeleteActive] = useState<boolean>(false);
   const [isModalEditActive, setIsModalEditActive] = useState<boolean>(false);
+  const [isModalTurnosActive, setIsModalTurnosActive] = useState<boolean>(false);
 
   useEffect(() => {
     loadCanchas("/canchas", "GET");
@@ -26,6 +29,11 @@ export const CanchasPage = () => {
   const onClickEdit = (cancha: Cancha) => {
     setSelectedCancha(cancha);
     setIsModalEditActive(true);
+  }
+  const onClickVerTurnos = (cancha: Cancha) => {
+    setSelectedCancha(cancha);
+    setIsModalTurnosActive(true);
+    loadTurnos(`/canchas/${cancha.id}/turnos?pageNo=0&pageSize=5&sortBy=inicioTurno`);
   }
 
   const submitDelete = (idCancha: number) => {
@@ -81,19 +89,20 @@ export const CanchasPage = () => {
     setIsModalAddActive(false);
     setIsModalDeleteActive(false);
     setIsModalEditActive(false);
+    setIsModalTurnosActive(false);
   }
 
   return (
     <>
-      {isLoading && (
+      {isLoadingCanchas && (
         <p>Cargando canchas...</p>
       )}
 
-      {!isLoading && error && (
-        <p>{error.message}</p>
+      {!isLoadingCanchas && errorCanchas && (
+        <p>{errorCanchas.message}</p>
       )}
       <button className="canchas_page__agregarCanchaBtn" onClick={() => setIsModalAddActive(true)}>Agregar cancha</button>
-      {!isLoading && !error && (
+      {!isLoadingCanchas && !errorCanchas && (
         <div className="canchas-container">
           {pageCancha?.totalElements == 0 && (
             <p>Parece que no hay canchas cargadas al sistema!</p>
@@ -101,6 +110,7 @@ export const CanchasPage = () => {
           {pageCancha?.content.map(cancha => (
             <CanchaDisplay key={cancha.id} cancha={cancha} >
               <div className="canchas__action-buttons">
+                <button onClick={() => onClickVerTurnos(cancha)}>Turnos</button>
                 <button onClick={() => onClickEdit(cancha)}>Editar</button>
                 <button onClick={() => onClickDelete(cancha)}>Eliminar</button>
               </div>
@@ -108,7 +118,7 @@ export const CanchasPage = () => {
           ))}
 
           {isModalDeleteActive && (
-            <BasicModal>
+            <BasicModal titulo="Eliminar cancha" closeModal={closeModal}>
               <div className="canchas__modal">
                 <p>¿Estás seguro que quieres eliminar la cancha "{selectedCancha?.nombre}"?</p>
                 <div className="canchas__modal__action-buttons">
@@ -122,18 +132,67 @@ export const CanchasPage = () => {
       )}
 
       {isModalAddActive && (
-        <BasicModal>
+        <BasicModal titulo="Agregar cancha" closeModal={closeModal}>
           <FormCancha
             onSubmit={(data: canchaValues) => submitAdd(data)}
             onCancel={closeModal} />
         </BasicModal>
       )}
+
       {isModalEditActive && (
-        <BasicModal>
+        <BasicModal titulo="Editar cancha" closeModal={closeModal}>
           <FormCancha
             cancha={selectedCancha}
             onSubmit={(data: canchaValues) => submitEdit(data)}
             onCancel={closeModal} />
+        </BasicModal>
+      )}
+
+      {
+        /* 
+          TODO: 
+          Implementar en el backend GET: canchas/{id}/turnos que devuelva un pageable de turnos
+          * Ver el manejo de errores al fallar la peticion dentro de BasicModal...
+          * Vale la pena crear otro componente? 
+        */
+      }
+      {isModalTurnosActive && (
+        <BasicModal titulo="Turnos" closeModal={closeModal}>
+          <>
+            <div className="modal__canchaTurnos">
+              {isLoadingTurnos && (
+                <p>Cargando...</p>
+              )}
+
+              {errorTurnos && (
+                <p>Opps! Error en el servidor, verificar la consola</p>
+              )}
+
+              {pageTurno && pageTurno.totalElements == 0 && (
+                <p>Parece que la cancha no tiene turnos asignados!</p>
+              )}
+
+              {pageTurno && pageTurno.totalElements > 0 && (
+                <>
+                  {pageTurno?.content.map(turno => (
+                    <TurnoDisplay turno={turno}>
+                    </TurnoDisplay>
+                  ))}
+
+                  {pageTurno.totalPages > 1 && (
+                    <div>
+                      {pageTurno.pageNo > 0 && (
+                        <button>Anterior</button>
+                      )}
+                      {pageTurno.pageNo > 0 && (
+                        <button>Siguiente</button>
+                      )}
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          </>
         </BasicModal>
       )}
     </>

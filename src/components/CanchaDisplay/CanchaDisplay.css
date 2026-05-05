@@ -1,12 +1,26 @@
 .cancha-display__container {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-items: center;
   padding: 1rem;
+  gap: 1rem;
+}
+
+.cancha-display__info {
+  display: flex;
+  align-items: center;
+  justify-items: center;
   gap: 1rem;
   text-transform: capitalize;
 }
 
-.cancha-display__nombre {
+.cancha-display__info__nombre {
   flex-grow: 1;
+}
+
+@media screen and (min-width: 550px) {
+  .cancha-display__container {
+    flex-direction: row;
+    justify-content: space-between;
+  }
 }
