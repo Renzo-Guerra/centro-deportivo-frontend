@@ -2,12 +2,11 @@ import { DisplayTurnosDelDia } from "../../components";
 import { MetricCard } from "../../components/MetricCard/MetricCard";
 import { useFetchAutomatico } from "../../hooks";
 import type { Cancha, Page, Turno } from "../../models";
-import { isTurnoEnCurso } from "../../utils";
+import { getTodayDateLocal, isTurnoEnCurso } from "../../utils";
 import "./Dashboard.css";
 
 export const Dashboard = () => {
-  const hoy = new Date().toISOString().split("T")[0];
-  const { data: turnos, isLoading: isLoadingTurnos, error: errorTurnos } = useFetchAutomatico<Turno[]>(`/turnos/fecha?fecha=${hoy}&sortBy=inicioTurno`);
+  const { data: turnos, isLoading: isLoadingTurnos, error: errorTurnos } = useFetchAutomatico<Turno[]>(`/turnos/fecha?fecha=${getTodayDateLocal()}&sortBy=inicioTurno`);
   const { data: pageCancha, isLoading: isLoadingCanchas, error: errorCanchas } = useFetchAutomatico<Page<Cancha>>(`/canchas`);
 
   const turnosEnCurso = turnos ? turnos.filter(t => isTurnoEnCurso(t)) : [];

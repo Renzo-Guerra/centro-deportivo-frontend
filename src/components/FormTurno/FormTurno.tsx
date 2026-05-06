@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FormInput } from "../FormInput/FormInput";
 import { FormSelect } from "../FormSelect/FormSelect";
 import type { OptionForSelect } from "../../models/types/optionForSelect";
-import { formatDateTime } from "../../utils";
+import { toDatetimeLocal } from "../../utils";
 import { useFetchAutomatico } from "../../hooks";
 import { useEffect, useMemo } from "react";
 
@@ -37,8 +37,8 @@ export const FormTurno = ({ turno, onSubmit, onCancel }: Props) => {
       deporte: turno?.deporte ?? deporteOptions[0].label,
       idCancha: turno?.idCancha.toString() ?? "",
       inicioTurno: turno
-        ? formatDateTime(turno.inicioTurno)
-        : formatDateTime(new Date()),
+        ? toDatetimeLocal(turno.inicioTurno)
+        : toDatetimeLocal(new Date()),
       duracionTurnoMinutos: turno?.duracionMinutos ?? 60
     }
   });
