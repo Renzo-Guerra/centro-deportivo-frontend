@@ -7,6 +7,7 @@ export * from "./FormLogIn/FormLogIn";
 export * from "./FormSelect/FormSelect";
 export * from "./FormTurno/FormTurno";
 export * from "./LinkButton/LinkButton";
+export * from "./Loading/Loading";
 export * from "./MetricCard/MetricCard";
 export * from "./Modals/BasicModal/BasicModal";
 export * from "./NavBar/NavBar";

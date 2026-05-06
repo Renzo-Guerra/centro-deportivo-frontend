@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { CanchaDisplay, BasicModal, TurnoDisplay } from "../../components";
+import { CanchaDisplay, BasicModal, TurnoDisplay, Loading } from "../../components";
 import { useFetchManual } from "../../hooks";
 import type { Cancha, canchaValues, Page, Turno } from "../../models";
 import "./Canchas.page.css";
@@ -22,10 +22,6 @@ export const CanchasPage = () => {
   useEffect(() => {
     loadCanchas("/canchas", "GET");
   }, []);
-
-  useEffect(() => {
-    console.log("Se actualizó pageCancha");
-  }, [pageCancha]);
 
   const onClickDelete = (cancha: Cancha) => {
     setSelectedCancha(cancha);
@@ -117,7 +113,7 @@ export const CanchasPage = () => {
   return (
     <>
       {isLoadingCanchas && (
-        <p>Cargando canchas...</p>
+        <Loading mensaje="Cargando canchas..." />
       )}
 
       {!isLoadingCanchas && errorCanchas && (
@@ -175,7 +171,7 @@ export const CanchasPage = () => {
           <>
             <div className="modal__canchaTurnos">
               {isLoadingTurnos && (
-                <p>Cargando...</p>
+                <Loading />
               )}
 
               {errorTurnos && (

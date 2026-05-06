@@ -1,4 +1,4 @@
-import { DisplayTurnosDelDia } from "../../components";
+import { DisplayTurnosDelDia, Loading } from "../../components";
 import { MetricCard } from "../../components/MetricCard/MetricCard";
 import { useFetchAutomatico } from "../../hooks";
 import type { Cancha, Page, Turno } from "../../models";
@@ -14,7 +14,7 @@ export const Dashboard = () => {
   return (
     <>
       {isLoadingTurnos || isLoadingCanchas ? (
-        <p>Cargando...</p>
+        <Loading mensaje="Cargando dashboard..." />
       ) : (
         <>
           <div className="dashboard__cards-container">

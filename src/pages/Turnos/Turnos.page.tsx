@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useFetchManual } from "../../hooks";
 import type { Page, Turno, turnoValues } from "../../models";
 import "./turnos.page.css";
-import { BasicModal, FormTurno, TurnoDisplay } from "../../components";
+import { BasicModal, FormTurno, Loading, TurnoDisplay } from "../../components";
 import toast from "react-hot-toast";
 import { axiosInterceptor } from "../../interceptors";
 import { formatDateTime } from "../../utils";
@@ -94,7 +94,7 @@ export const TurnosPage = () => {
   return (
     <>
       {isLoading && (
-        <p>Cargando Turnos...</p>
+        <Loading mensaje="Cargando turnos..." />
       )}
 
       {!isLoading && error && (
