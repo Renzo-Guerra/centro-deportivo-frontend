@@ -11,6 +11,8 @@ export const CanchasPage = () => {
   const { data: pageCancha, isLoading: isLoadingCanchas, error: errorCanchas, submitRequest: loadCanchas } = useFetchManual<Page<Cancha>>();
   const { data: pageTurno, isLoading: isLoadingTurnos, error: errorTurnos, submitRequest: loadTurnos } = useFetchManual<Page<Turno>>();
 
+  const pageSize = 5;
+
   const [selectedCancha, setSelectedCancha] = useState<Cancha | null>(null);
   const [isModalAddActive, setIsModalAddActive] = useState<boolean>(false);
   const [isModalDeleteActive, setIsModalDeleteActive] = useState<boolean>(false);
@@ -20,6 +22,10 @@ export const CanchasPage = () => {
   useEffect(() => {
     loadCanchas("/canchas", "GET");
   }, []);
+
+  useEffect(() => {
+    console.log("Se actualizó pageCancha");
+  }, [pageCancha]);
 
   const onClickDelete = (cancha: Cancha) => {
     setSelectedCancha(cancha);
@@ -33,7 +39,7 @@ export const CanchasPage = () => {
   const onClickVerTurnos = (cancha: Cancha) => {
     setSelectedCancha(cancha);
     setIsModalTurnosActive(true);
-    loadTurnos(`/canchas/${cancha.id}/turnos?pageNo=0&pageSize=5&sortBy=inicioTurno`);
+    loadTurnos(`/canchas/${cancha.id}/turnos?pageNo=0&pageSize=${pageSize}&sortBy=inicioTurno`);
   }
 
   const submitDelete = (idCancha: number) => {
@@ -82,6 +88,22 @@ export const CanchasPage = () => {
         closeModal();
         loadCanchas("/canchas", "GET");
       });
+  }
+
+  const traerPaginaAnterior = () => {
+    if (!pageTurno || pageTurno.pageSize == 1 || pageTurno.pageNo == 0) {
+      return;
+    }
+
+    loadTurnos(`/canchas/${selectedCancha?.id}/turnos?pageNo=${pageTurno.pageNo - 1}&pageSize=${pageSize}&sortBy=inicioTurno`);
+  }
+
+  const traerPaginaSiguiente = () => {
+    if (!pageTurno || pageTurno.pageSize == 0 || pageTurno.last) {
+      return;
+    }
+
+    loadTurnos(`/canchas/${selectedCancha?.id}/turnos?pageNo=${pageTurno.pageNo + 1}&pageSize=${pageSize}&sortBy=inicioTurno`);
   }
 
   const closeModal = () => {
@@ -148,14 +170,6 @@ export const CanchasPage = () => {
         </BasicModal>
       )}
 
-      {
-        /* 
-          TODO: 
-          Implementar en el backend GET: canchas/{id}/turnos que devuelva un pageable de turnos
-          * Ver el manejo de errores al fallar la peticion dentro de BasicModal...
-          * Vale la pena crear otro componente? 
-        */
-      }
       {isModalTurnosActive && (
         <BasicModal titulo="Turnos" closeModal={closeModal}>
           <>
@@ -175,18 +189,17 @@ export const CanchasPage = () => {
               {pageTurno && pageTurno.totalElements > 0 && (
                 <>
                   {pageTurno?.content.map(turno => (
-                    <TurnoDisplay turno={turno}>
-                    </TurnoDisplay>
+                    <TurnoDisplay key={turno.id} turno={turno} />
                   ))}
 
-                  {pageTurno.totalPages > 1 && (
-                    <div>
-                      {pageTurno.pageNo > 0 && (
-                        <button>Anterior</button>
-                      )}
-                      {pageTurno.pageNo > 0 && (
-                        <button>Siguiente</button>
-                      )}
+                  {/* Tranquilamente podria ser un componente */}
+                  {pageTurno.totalPages > 0 && (
+                    <div className="form-pageable-actionBtns-container">
+                      <button onClick={traerPaginaAnterior} disabled={pageTurno.pageNo == 0}>Anterior</button>
+                      <div>
+                        <p>Página {pageTurno.pageNo + 1} de {pageTurno.totalPages}</p>
+                      </div>
+                      <button onClick={traerPaginaSiguiente} disabled={pageTurno.last}>Siguiente</button>
                     </div>
                   )}
                 </>
