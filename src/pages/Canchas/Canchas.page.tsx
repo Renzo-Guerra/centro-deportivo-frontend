@@ -171,18 +171,18 @@ export const CanchasPage = () => {
           <>
             <div className="modal__canchaTurnos">
               {isLoadingTurnos && (
-                <Loading />
+                <Loading mensaje="Cargando turnos..." />
               )}
 
               {errorTurnos && (
                 <p>Opps! Error en el servidor, verificar la consola</p>
               )}
 
-              {pageTurno && pageTurno.totalElements == 0 && (
+              {!isLoadingTurnos && pageTurno && pageTurno.totalElements == 0 && (
                 <p>Parece que la cancha no tiene turnos asignados!</p>
               )}
 
-              {pageTurno && pageTurno.totalElements > 0 && (
+              {!isLoadingTurnos && pageTurno && pageTurno.totalElements > 0 && (
                 <>
                   {pageTurno?.content.map(turno => (
                     <TurnoDisplay key={turno.id} turno={turno} />
