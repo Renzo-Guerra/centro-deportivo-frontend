@@ -44,19 +44,3 @@
   font-size: .8rem;
   color: var(--color-secondary--500);
 }
-
-.datos__cancha.futbol {
-  color: rgb(184, 0, 0);
-}
-
-.datos__cancha.padel {
-  color: rgb(4, 131, 0);
-}
-
-.datos__cancha.tenis {
-  color: rgb(42, 0, 192);
-}
-
-.datos__cancha.voley {
-  color: rgb(128, 0, 179);
-}

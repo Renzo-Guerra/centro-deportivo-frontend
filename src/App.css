@@ -94,3 +94,19 @@
   gap: 1rem;
   padding: 1rem;
 }
+
+.futbol {
+  color: rgb(184, 0, 0);
+}
+
+.padel {
+  color: rgb(4, 131, 0);
+}
+
+.tenis {
+  color: rgb(42, 0, 192);
+}
+
+.voley {
+  color: rgb(128, 0, 179);
+}

@@ -7,22 +7,6 @@
   border-radius: .5rem;
 }
 
-.turno-display__container.futbol {
-  border-left: solid 2px rgb(189, 0, 0);
-}
-
-.turno-display__container.padel {
-  border-left: solid 2px rgb(0, 153, 0);
-}
-
-.turno-display__container.tenis {
-  border-left: solid 2px rgb(34, 0, 156);
-}
-
-.turno-display__container.voley {
-  border-left: solid 2px rgb(109, 0, 156);
-}
-
 .turno-display__info {
   display: flex;
   gap: .5rem;
