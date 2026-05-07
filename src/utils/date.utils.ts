@@ -54,3 +54,9 @@ export const toDatetimeLocal = (date: string | Date): string => {
 
   return `${year}-${month}-${day}T${hours}:${minutes}`;
 }
+
+export const addMinutes = (date: Date | string, minutes: number): Date => {
+  let fecha = new Date(date);
+
+  return new Date(fecha.getTime() + minutes * 60000);
+};
