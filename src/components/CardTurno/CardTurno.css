@@ -6,7 +6,7 @@
 }
 
 .card_container--resaltado {
-  background-color: rgb(255, 253, 139);
+  background-color: var(--color-accent--100);
 }
 
 .card_container__deporte {
@@ -16,7 +16,7 @@
   width: 3rem;
   height: 3rem;
   border-radius: .3rem;
-  color: rgb(240, 240, 240);
+  color: var(--color-background--500);
   font-weight: 800;
   font-size: 1.2rem;
 }
@@ -31,11 +31,12 @@
 }
 
 .datos__cliente {
-  color: rgb(11, 72, 240);
+  color: var(--color-primary--600);
+  font-weight: 700;
 }
 
 .datos__cancha {
-  color: rgb(113, 115, 121);
+  color: var(--color-secondary--500);
 }
 
 .card_container__horarios {
@@ -48,12 +49,12 @@
 .card_container__horarios span:first-child {
   font-size: 1.1rem;
   font-weight: 800;
-  color: rgb(97, 60, 233);
+  color: var(--color-accent--500);
 }
 
 .card_container__horarios span:last-child {
   font-size: .8rem;
-  color: rgb(113, 115, 121);
+  color: var(--color-secondary--500);
 }
 
 .futbol {

@@ -1,6 +1,6 @@
 .navbar__container {
   padding: 1rem;
-  background-color: rgb(194, 177, 151);
+  background-color: var(--color-primary--500);
 }
 
 .navbar__buttons-container {

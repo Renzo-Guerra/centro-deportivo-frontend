@@ -17,8 +17,8 @@ export const BasicModal = ({ titulo, closeModal, children }: Props) => {
     <div className="modal-overlay">
       <div className="modal-content">
         <div className='modal-content__header'>
-          <h2>{titulo}</h2>
-          <button className='modal-content__closeModalBtn' onClick={closeModal}>X</button>
+          <h2 className='modal-content__header__titular'>{titulo}</h2>
+          <button className='btn btn-danger modal-content__closeModalBtn' onClick={closeModal}>X</button>
         </div>
         <div className='modal-content__children-container'>
           {children}

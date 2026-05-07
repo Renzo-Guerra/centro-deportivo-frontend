@@ -3,7 +3,7 @@ import "./LogInPage.css";
 
 export const LogInPage = () => {
   return (
-    <main className="login-page-container">
+    <main className="page-container">
       <section className="login-content">
         <FormLogIn />
       </section>

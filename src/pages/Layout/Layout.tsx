@@ -5,7 +5,7 @@ import { NavBar } from "../../components/NavBar/NavBar";
 export const Layout = () => {
   return (
     <>
-      <div>
+      <div className="layout-container">
         <NavBar />
         <main>
           <Outlet />

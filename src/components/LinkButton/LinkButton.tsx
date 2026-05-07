@@ -9,7 +9,7 @@ interface Props {
 export const LinkButton = ({ ruta, label }: Props) => {
   return (
     <NavLink
-      className={({ isActive }) => `btn-solid ${isActive ? 'active' : ''}`}
+      className={({ isActive }) => `btn navlink border-radius--500 btn-primary ${isActive ? 'active' : ''}`}
       to={ruta}
       replace={true}>{label}</NavLink>
   )

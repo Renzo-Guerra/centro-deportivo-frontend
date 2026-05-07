@@ -1,12 +1,14 @@
-.canchas_page__agregarCanchaBtn {
-  display: flex;
-  padding: .4rem;
-  margin: 1rem;
-  cursor: pointer;
+.btn-crear-cancha {
+  width: fit-content;
+}
+
+.canchas-container {
+  display: grid;
+  background-color: inherit;
 }
 
 .canchas-container>*:not(:last-child) {
-  border-bottom: 1px solid rgba(0, 0, 128, 0.2);
+  border-bottom: 1px solid var(--color-secondary--100);
 }
 
 .canchas__modal {
@@ -15,7 +17,7 @@
   background-color: inherit;
 }
 
-.canchas__action-buttons {
+.canchas-page__action-buttons {
   display: flex;
   gap: .6rem;
 }

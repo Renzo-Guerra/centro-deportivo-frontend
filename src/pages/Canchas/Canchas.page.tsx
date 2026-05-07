@@ -112,98 +112,98 @@ export const CanchasPage = () => {
 
   return (
     <>
-      {isLoadingCanchas && (
-        <Loading mensaje="Cargando canchas..." />
-      )}
+      <div className="page-container">
+        {isLoadingCanchas && (
+          <Loading mensaje="Cargando canchas..." />
+        )}
 
-      {!isLoadingCanchas && errorCanchas && (
-        <p>{errorCanchas.message}</p>
-      )}
-      <button className="canchas_page__agregarCanchaBtn" onClick={() => setIsModalAddActive(true)}>Agregar cancha</button>
-      {!isLoadingCanchas && !errorCanchas && (
-        <div className="canchas-container">
-          {pageCancha?.totalElements == 0 && (
-            <p>Parece que no hay canchas cargadas al sistema!</p>
-          )}
-          {pageCancha?.content.map(cancha => (
-            <CanchaDisplay key={cancha.id} cancha={cancha} >
-              <div className="canchas__action-buttons">
-                <button onClick={() => onClickVerTurnos(cancha)}>Turnos</button>
-                <button onClick={() => onClickEdit(cancha)}>Editar</button>
-                <button onClick={() => onClickDelete(cancha)}>Eliminar</button>
-              </div>
-            </CanchaDisplay>
-          ))}
-
-          {isModalDeleteActive && (
-            <BasicModal titulo="Eliminar cancha" closeModal={closeModal}>
-              <div className="canchas__modal">
-                <p>¿Estás seguro que quieres eliminar la cancha "{selectedCancha?.nombre}"?</p>
-                <div className="canchas__modal__action-buttons">
-                  <button onClick={closeModal}>Cancelar</button>
-                  <button onClick={() => selectedCancha ? submitDelete(selectedCancha.id) : ""}>Eliminar</button>
+        {!isLoadingCanchas && errorCanchas && (
+          <p>{errorCanchas.message}</p>
+        )}
+        <button className="btn btn-accent border-radius--500 btn-crear-cancha" onClick={() => setIsModalAddActive(true)}>Agregar cancha</button>
+        {!isLoadingCanchas && !errorCanchas && (
+          <div className="canchas-container">
+            {pageCancha?.totalElements == 0 && (
+              <p>Parece que no hay canchas cargadas al sistema!</p>
+            )}
+            {pageCancha?.content.map(cancha => (
+              <CanchaDisplay key={cancha.id} cancha={cancha} >
+                <div className="canchas-page__action-buttons">
+                  <button className="btn btn-accent border-radius--500" onClick={() => onClickVerTurnos(cancha)}>Turnos</button>
+                  <button className="btn btn-secondary border-radius--500" onClick={() => onClickEdit(cancha)}>Editar</button>
+                  <button className="btn btn-danger border-radius--500" onClick={() => onClickDelete(cancha)}>Eliminar</button>
                 </div>
-              </div>
-            </BasicModal>
-          )}
-        </div>
-      )}
+              </CanchaDisplay>
+            ))}
 
-      {isModalAddActive && (
-        <BasicModal titulo="Agregar cancha" closeModal={closeModal}>
-          <FormCancha
-            onSubmit={(data: canchaValues) => submitAdd(data)}
-            onCancel={closeModal} />
-        </BasicModal>
-      )}
+            {isModalDeleteActive && (
+              <BasicModal titulo="Eliminar cancha" closeModal={closeModal}>
+                <div className="canchas__modal">
+                  <p>¿Estás seguro que quieres eliminar la cancha "{selectedCancha?.nombre}"?</p>
+                  <div className="canchas__modal__action-buttons">
+                    <button className="btn btn-accent border-radius--500" onClick={closeModal}>Cancelar</button>
+                    <button className="btn btn-danger border-radius--500" onClick={() => selectedCancha ? submitDelete(selectedCancha.id) : ""}>Eliminar</button>
+                  </div>
+                </div>
+              </BasicModal>
+            )}
+          </div>
+        )}
 
-      {isModalEditActive && (
-        <BasicModal titulo="Editar cancha" closeModal={closeModal}>
-          <FormCancha
-            cancha={selectedCancha}
-            onSubmit={(data: canchaValues) => submitEdit(data)}
-            onCancel={closeModal} />
-        </BasicModal>
-      )}
+        {isModalAddActive && (
+          <BasicModal titulo="Agregar cancha" closeModal={closeModal}>
+            <FormCancha
+              onSubmit={(data: canchaValues) => submitAdd(data)}
+              onCancel={closeModal} />
+          </BasicModal>
+        )}
 
-      {isModalTurnosActive && (
-        <BasicModal titulo="Turnos" closeModal={closeModal}>
-          <>
-            <div className="modal__canchaTurnos">
-              {isLoadingTurnos && (
-                <Loading mensaje="Cargando turnos..." />
-              )}
+        {isModalEditActive && (
+          <BasicModal titulo="Editar cancha" closeModal={closeModal}>
+            <FormCancha
+              cancha={selectedCancha}
+              onSubmit={(data: canchaValues) => submitEdit(data)}
+              onCancel={closeModal} />
+          </BasicModal>
+        )}
 
-              {errorTurnos && (
-                <p>Opps! Error en el servidor, verificar la consola</p>
-              )}
+        {isModalTurnosActive && (
+          <BasicModal titulo="Turnos" closeModal={closeModal}>
+            <>
+              <div className="modal__canchaTurnos">
+                {isLoadingTurnos && (
+                  <Loading mensaje="Cargando turnos..." />
+                )}
 
-              {!isLoadingTurnos && pageTurno && pageTurno.totalElements == 0 && (
-                <p>Parece que la cancha no tiene turnos asignados!</p>
-              )}
+                {errorTurnos && (
+                  <p>Opps! Error en el servidor, verificar la consola</p>
+                )}
 
-              {!isLoadingTurnos && pageTurno && pageTurno.totalElements > 0 && (
-                <>
-                  {pageTurno?.content.map(turno => (
-                    <TurnoDisplay key={turno.id} turno={turno} />
-                  ))}
+                {!isLoadingTurnos && pageTurno && pageTurno.totalElements == 0 && (
+                  <p>Parece que la cancha no tiene turnos asignados!</p>
+                )}
 
-                  {/* Tranquilamente podria ser un componente */}
-                  {pageTurno.totalPages > 0 && (
-                    <div className="form-pageable-actionBtns-container">
-                      <button onClick={traerPaginaAnterior} disabled={pageTurno.pageNo == 0}>Anterior</button>
-                      <div>
+                {!isLoadingTurnos && pageTurno && pageTurno.totalElements > 0 && (
+                  <>
+                    {pageTurno?.content.map(turno => (
+                      <TurnoDisplay key={turno.id} turno={turno} />
+                    ))}
+
+                    {/* Tranquilamente podria ser un componente */}
+                    {pageTurno.totalPages > 0 && (
+                      <div className="form-pageable-actionBtns-container">
+                        <button className="btn btn-primary border-radius--500" onClick={traerPaginaAnterior} disabled={pageTurno.pageNo == 0}>Anterior</button>
                         <p>Página {pageTurno.pageNo + 1} de {pageTurno.totalPages}</p>
+                        <button className="btn btn-primary border-radius--500" onClick={traerPaginaSiguiente} disabled={pageTurno.last}>Siguiente</button>
                       </div>
-                      <button onClick={traerPaginaSiguiente} disabled={pageTurno.last}>Siguiente</button>
-                    </div>
-                  )}
-                </>
-              )}
-            </div>
-          </>
-        </BasicModal>
-      )}
+                    )}
+                  </>
+                )}
+              </div>
+            </>
+          </BasicModal>
+        )}
+      </div>
     </>
   )
 }

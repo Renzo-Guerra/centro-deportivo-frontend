@@ -1,17 +1,13 @@
 .dashboard__cards-container {
-  background-color: rgb(245, 245, 245);
-}
-
-.dashboard__cards {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  padding: 1rem;
+  width: 100%;
   gap: 1rem;
-  margin-inline: auto;
+  justify-self: center;
 }
 
-@media screen and (min-width: 700px) {
-  .dashboard__cards {
+@media screen and (min-width: 600px) {
+  .dashboard__cards-container {
     max-width: 800px;
     grid-template-columns: repeat(4, 1fr);
   }

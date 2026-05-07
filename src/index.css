@@ -1,4 +1,22 @@
-:root {}
+:root {
+  --color-background--500: #EDE9E6;
+  --color-primary--600: #9e6b3a;
+  --color-primary--500: #C9996B;
+  --color-primary--100: #efe0d3;
+  --color-secondary--600: #403734;
+  --color-secondary--500: #5C4F4A;
+  --color-secondary--100: #d1c9c6;
+  --color-accent--600: #40534c;
+  --color-accent--500: #5C766D;
+  --color-accent--100: #ccd8d4;
+  --color-danger--600: #a00e0e;
+  --color-danger--500: #e41414;
+  --color-danger--100: #f9b7b7;
+
+  --border-radius--800: 1.5rem;
+  --border-radius--500: 0.5rem;
+  --border-radius--100: 0.2rem;
+}
 
 @media (prefers-color-scheme: dark) {
   :root {}

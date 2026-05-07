@@ -93,58 +93,60 @@ export const TurnosPage = () => {
 
   return (
     <>
-      {isLoading && (
-        <Loading mensaje="Cargando turnos..." />
-      )}
+      <div className="page-container">
+        {isLoading && (
+          <Loading mensaje="Cargando turnos..." />
+        )}
 
-      {!isLoading && error && (
-        <p>{error.message}</p>
-      )}
-      <button className="turnos_page__agregarCanchaBtn" onClick={() => setIsModalAddActive(true)}>Agregar turno</button>
-      {!isLoading && !error && (
-        <div className="turnos-container">
-          {pageTurno?.totalElements == 0 && (
-            <p>Parece que no hay turnos cargados en el sistema!</p>
-          )}
-          {pageTurno?.content.map(turno => (
-            <TurnoDisplay key={turno.id} turno={turno} >
-              <div className="turnos-page__action-buttons">
-                <button onClick={() => onClickEdit(turno)}>Editar</button>
-                <button onClick={() => onClickDelete(turno)}>Eliminar</button>
-              </div>
-            </TurnoDisplay>
-          ))}
-        </div>
-      )}
-
-      {isModalDeleteActive && (
-        <BasicModal titulo="Eliminar turno" closeModal={closeModal}>
-          <div className="turnos__modal">
-            <p>¿Estás seguro que quieres eliminar el turno de "{selectedTurno?.nombreCliente} {selectedTurno?.apellidoCliente}"?</p>
-            <div className="turnos__modal__action-buttons">
-              <button onClick={closeModal}>Cancelar</button>
-              <button onClick={() => selectedTurno ? submitDelete(selectedTurno.id) : ""}>Eliminar</button>
-            </div>
+        {!isLoading && error && (
+          <p>{error.message}</p>
+        )}
+        <button className="btn btn-accent border-radius--500 btn-crear-turno" onClick={() => setIsModalAddActive(true)}>Agregar turno</button>
+        {!isLoading && !error && (
+          <div className="turnos-container">
+            {pageTurno?.totalElements == 0 && (
+              <p>Parece que no hay turnos cargados en el sistema!</p>
+            )}
+            {pageTurno?.content.map(turno => (
+              <TurnoDisplay key={turno.id} turno={turno} >
+                <div className="turnos-page__action-buttons">
+                  <button className="btn btn-secondary border-radius--500" onClick={() => onClickEdit(turno)}>Editar</button>
+                  <button className="btn btn-danger border-radius--500" onClick={() => onClickDelete(turno)}>Eliminar</button>
+                </div>
+              </TurnoDisplay>
+            ))}
           </div>
-        </BasicModal>
-      )}
+        )}
 
-      {isModalAddActive && (
-        <BasicModal titulo="Crear turno" closeModal={closeModal}>
-          <FormTurno
-            onSubmit={(data: turnoValues) => submitAdd(data)}
-            onCancel={closeModal} />
-        </BasicModal>
-      )}
+        {isModalDeleteActive && (
+          <BasicModal titulo="Eliminar turno" closeModal={closeModal}>
+            <div className="turnos__modal">
+              <p>¿Estás seguro que quieres eliminar el turno de "{selectedTurno?.nombreCliente} {selectedTurno?.apellidoCliente}"?</p>
+              <div className="turnos__modal__action-buttons">
+                <button className="btn btn-secondary border-radius--500" onClick={closeModal}>Cancelar</button>
+                <button className="btn btn-danger border-radius--500" onClick={() => selectedTurno ? submitDelete(selectedTurno.id) : ""}>Eliminar</button>
+              </div>
+            </div>
+          </BasicModal>
+        )}
 
-      {isModalEditActive && (
-        <BasicModal titulo="Editar turno" closeModal={closeModal}>
-          <FormTurno
-            turno={selectedTurno}
-            onSubmit={(data: turnoValues) => submitEdit(data)}
-            onCancel={closeModal} />
-        </BasicModal>
-      )}
+        {isModalAddActive && (
+          <BasicModal titulo="Crear turno" closeModal={closeModal}>
+            <FormTurno
+              onSubmit={(data: turnoValues) => submitAdd(data)}
+              onCancel={closeModal} />
+          </BasicModal>
+        )}
+
+        {isModalEditActive && (
+          <BasicModal titulo="Editar turno" closeModal={closeModal}>
+            <FormTurno
+              turno={selectedTurno}
+              onSubmit={(data: turnoValues) => submitEdit(data)}
+              onCancel={closeModal} />
+          </BasicModal>
+        )}
+      </div>
     </>
   )
 }

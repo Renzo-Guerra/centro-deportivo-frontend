@@ -67,7 +67,7 @@ export const FormTurno = ({ turno, onSubmit, onCancel }: Props) => {
 
   return (
     <>
-      <form className="formTurno" onSubmit={handleSubmit((data: turnoValues) => onSubmit(data))}>
+      <form className="formTurno form" onSubmit={handleSubmit((data: turnoValues) => onSubmit(data))}>
         <FormInput name={"nombreCliente"} label="Nombre" type="text" control={control} error={errors.nombreCliente} />
         <FormInput name={"apellidoCliente"} label="Apellido" type="text" control={control} error={errors.apellidoCliente} />
         <FormInput name={"celularCliente"} label="Celular" type="text" control={control} error={errors.celularCliente} />
@@ -76,8 +76,8 @@ export const FormTurno = ({ turno, onSubmit, onCancel }: Props) => {
         <FormInput name={"inicioTurno"} label="Inicio turno" type="datetime-local" control={control} error={errors.inicioTurno} />
         <FormInput name={"duracionTurnoMinutos"} label="Duracion (minutos)" type="number" control={control} error={errors.duracionTurnoMinutos} />
         <div className="formTurno__actionButtons">
-          <button type="button" className="btn btn-cancel" onClick={onCancel} disabled={isLoading || isLoadingCanchas}>Cancelar</button>
-          <button type="submit" className="btn btn-primary" disabled={isLoading || isLoadingCanchas}>Enviar</button>
+          <button type="button" className="btn btn-secondary border-radius--500" onClick={onCancel} disabled={isLoading || isLoadingCanchas}>Cancelar</button>
+          <button type="submit" className="btn btn-accent border-radius--500" disabled={isLoading || isLoadingCanchas}>Enviar</button>
         </div>
       </form>
     </>

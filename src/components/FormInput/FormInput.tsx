@@ -20,7 +20,13 @@ export const FormInput = <T extends FieldValues>({ name, label, type, control, e
           name={name}
           control={control}
           render={({ field }) =>
-            <input {...field} value={field.value ?? ""} className={error ? "input-error" : ""} type={type} name={name} id={name} disabled={isDisabled} />
+            <input {...field}
+              value={field.value ?? ""}
+              className={error ? "input-error" : ""}
+              type={type}
+              name={name}
+              id={name}
+              disabled={isDisabled} />
           }
         />
         {error && (

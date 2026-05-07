@@ -1,15 +1,11 @@
-.turnos-container {
-  display: grid;
-  padding: 1rem;
-  gap: 1rem;
-  background-color: rgb(241, 241, 241);
+.btn-crear-turno {
+  width: fit-content;
 }
 
-.turnos_page__agregarCanchaBtn {
-  display: flex;
-  padding: .4rem;
-  margin: 1rem;
-  cursor: pointer;
+.turnos-container {
+  display: grid;
+  gap: 1rem;
+  background-color: inherit;
 }
 
 .turnos-page__action-buttons {

@@ -13,12 +13,12 @@ export const Dashboard = () => {
 
   return (
     <>
-      {isLoadingTurnos || isLoadingCanchas ? (
-        <Loading mensaje="Cargando dashboard..." />
-      ) : (
-        <>
-          <div className="dashboard__cards-container">
-            <div className="dashboard__cards">
+      <div className="page-container">
+        {isLoadingTurnos || isLoadingCanchas ? (
+          <Loading mensaje="Cargando dashboard" />
+        ) : (
+          <>
+            <div className="dashboard__cards-container">
               <MetricCard label={"TURNOS HOY"} cantidad={turnos ? turnos.length : 0} />
               <MetricCard label={"EN CURSO"} cantidad={turnosEnCurso.length} />
               {errorCanchas ? (
@@ -30,10 +30,10 @@ export const Dashboard = () => {
                 </>
               )}
             </div>
-          </div>
-          <DisplayTurnosDelDia turnos={turnos} error={errorTurnos} />
-        </>
-      )}
+            <DisplayTurnosDelDia turnos={turnos} error={errorTurnos} />
+          </>
+        )}
+      </div>
     </>
   )
 }
