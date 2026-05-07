@@ -5,7 +5,7 @@ import "./turnos.page.css";
 import { BasicModal, FormTurno, Loading, TurnoDisplay } from "../../components";
 import toast from "react-hot-toast";
 import { axiosInterceptor } from "../../interceptors";
-import { formatDateTime } from "../../utils";
+import { hasSameValues } from "../../utils";
 
 export const TurnosPage = () => {
   const { data: pageTurno, isLoading, error, submitRequest: loadTurnos } = useFetchManual<Page<Turno>>();
@@ -37,19 +37,6 @@ export const TurnosPage = () => {
   const onClickEdit = (turno: Turno) => {
     setSelectedTurno(turno);
     setIsModalEditActive(true);
-  }
-
-  const hasSameValues = (turno: Turno | null, newData: turnoValues) => {
-    return (
-      turno &&
-      turno.nombreCliente === newData.nombreCliente &&
-      turno.apellidoCliente === newData.apellidoCliente &&
-      turno.celularCliente === newData.celularCliente &&
-      turno.deporte === newData.deporte &&
-      turno.idCancha.toString() === newData.idCancha &&
-      formatDateTime(turno.inicioTurno) === newData.inicioTurno &&
-      turno.duracionMinutos === newData.duracionTurnoMinutos
-    );
   }
 
   const submitEdit = (data: turnoValues) => {

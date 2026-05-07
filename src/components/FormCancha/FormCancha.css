@@ -1,11 +1,6 @@
 .formCancha {
-  display: flex;
-  flex-direction: column;
-  padding: 1rem;
-  background: #ffffff;
-  border-radius: 1rem;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-  font-family: 'Inter', system-ui, sans-serif;
+  display: grid;
+  gap: 1rem;
 }
 
 .formCancha .btn {
@@ -19,37 +14,9 @@
   margin-top: 1rem;
 }
 
-
-.formCancha .btn.btn-primary {
-  background-color: #2563eb;
-  color: white;
-}
-
-.formCancha .btn.btn-cancel {
-  background-color: #e41414;
-  color: white;
-}
-
-.formCancha .btn.btn-primary:hover {
-  background-color: #1d4ed8;
-}
-
-.formCancha .btn.btn-cancel:hover {
-  background-color: #be0e0e;
-}
-
-.formCancha .btn:disabled {
-  background-color: #93c5fd;
-  cursor: not-allowed;
-}
-
 .formCancha span {
   text-align: center;
   font-size: 0.9rem;
-}
-
-.formCancha .error-msg {
-  color: rgb(223, 31, 47);
 }
 
 .formCancha__actionButtons {

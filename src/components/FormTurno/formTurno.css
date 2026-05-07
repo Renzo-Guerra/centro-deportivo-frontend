@@ -3,8 +3,6 @@
   padding: 1.5rem;
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
   display: grid;
-  max-height: 80vh;
-  overflow-y: auto;
   gap: 1rem;
 }
 

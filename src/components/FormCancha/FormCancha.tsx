@@ -31,12 +31,12 @@ export const FormCancha = ({ cancha, onSubmit, onCancel }: Props) => {
 
   return (
     <>
-      <form className="formCancha" onSubmit={handleSubmit((data: canchaValues) => onSubmit(data))}>
+      <form className="form formCancha" onSubmit={handleSubmit((data: canchaValues) => onSubmit(data))}>
         <FormInput name={"nombre"} label="Nombre" type="text" control={control} error={errors.nombre} />
         <FormSelect name={"tipo"} label="Deporte" options={deporteOptions} control={control} error={errors.tipo} />
         <div className="formCancha__actionButtons">
-          <button type="button" className="btn btn-cancel" onClick={onCancel} disabled={isLoading}>Cancelar</button>
-          <button type="submit" className="btn btn-primary" disabled={isLoading}>Enviar</button>
+          <button type="button" className="btn btn-secondary" onClick={onCancel} disabled={isLoading}>Cancelar</button>
+          <button type="submit" className="btn btn-accent" disabled={isLoading}>Enviar</button>
         </div>
       </form>
     </>

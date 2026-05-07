@@ -71,8 +71,7 @@ export const CanchasPage = () => {
   const submitEdit = (data: canchaValues) => {
     // Fast ending en caso de que no se hayan editado los valores
     if (hasSameValues(selectedCancha, data)) {
-      toast.success("Cancha editada exitosamente!");
-      closeModal();
+      toast.error("Primero debe editar los datos!");
       return;
     }
 
@@ -141,7 +140,7 @@ export const CanchasPage = () => {
                 <div className="canchas__modal">
                   <p>¿Estás seguro que quieres eliminar la cancha "{selectedCancha?.nombre}"?</p>
                   <div className="canchas__modal__action-buttons">
-                    <button className="btn btn-accent border-radius--500" onClick={closeModal}>Cancelar</button>
+                    <button className="btn btn-secondary border-radius--500" onClick={closeModal}>Cancelar</button>
                     <button className="btn btn-danger border-radius--500" onClick={() => selectedCancha ? submitDelete(selectedCancha.id) : ""}>Eliminar</button>
                   </div>
                 </div>
