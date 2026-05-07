@@ -1,5 +1,5 @@
 import { useForm, useWatch } from "react-hook-form";
-import { TIPOS_CANCHA_ARRAY, turnoSchema, type Cancha, type Turno, type turnoValues } from "../../models";
+import { DURACION_TURNOS_MINUTOS_OBJETO, TIPOS_CANCHA_ARRAY, turnoSchema, type Cancha, type TiposCancha, type Turno, type turnoValues } from "../../models";
 import "./formTurno.css";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormInput } from "../FormInput/FormInput";
@@ -16,9 +16,14 @@ interface Props {
 }
 
 export const FormTurno = ({ turno, onSubmit, onCancel }: Props) => {
-  const { data: canchas, isLoading: isLoadingCanchas, error } = useFetchAutomatico<Cancha[]>("/canchas/all", "GET");
+  const {
+    data: canchas,
+    isLoading: isLoadingCanchas,
+    error
+  } = useFetchAutomatico<Cancha[]>("/canchas/all", "GET");
 
-  const deporteOptions: OptionForSelect[] = TIPOS_CANCHA_ARRAY.map(tipo => ({
+  // Declaramos los valores que puede tener el select de "deporte"
+  const deporteOptions: OptionForSelect<TiposCancha>[] = TIPOS_CANCHA_ARRAY.map(tipo => ({
     label: tipo,
     value: tipo
   }));
@@ -34,21 +39,27 @@ export const FormTurno = ({ turno, onSubmit, onCancel }: Props) => {
       nombreCliente: turno?.nombreCliente,
       apellidoCliente: turno?.apellidoCliente,
       celularCliente: turno?.celularCliente,
-      deporte: turno?.deporte ?? deporteOptions[0].label,
+      deporte: turno?.deporte ?? deporteOptions[0].value,
+      // Al crearse un nuevo turno, necesitamos esperar los id's de la base de datos
+      // Se inicializa con "" y se actualiza con un useEffect 
+      // al llegar las canchas por el fetch
       idCancha: turno?.idCancha.toString() ?? "",
       inicioTurno: turno
         ? toDatetimeLocal(turno.inicioTurno)
         : toDatetimeLocal(new Date()),
-      duracionTurnoMinutos: turno?.duracionMinutos ?? 60
+      duracionTurnoMinutos: turno?.duracionMinutos ?? DURACION_TURNOS_MINUTOS_OBJETO[TIPOS_CANCHA_ARRAY[0]]
     }
   });
 
+  // Declaramos un observer para actualizar 
+  // otros datos del form cuando "deporte" cambie de valor
   const deporteSeleccionado = useWatch({
     control,
     name: "deporte",
   });
 
-  const opcionesCanchasFiltradas = useMemo((): OptionForSelect[] => {
+  // Filtra las canchas disponibles a elegir en base al "deporte" seleccionado
+  const opcionesCanchasFiltradas = useMemo((): OptionForSelect<string | number>[] => {
     if (!canchas || !deporteSeleccionado) return [];
 
     return canchas
@@ -61,7 +72,10 @@ export const FormTurno = ({ turno, onSubmit, onCancel }: Props) => {
 
   useEffect(() => {
     if (!turno && canchas && opcionesCanchasFiltradas.length > 0) {
+      // Selecciona el idCancha del primer elemento del select cancha
       setValue("idCancha", opcionesCanchasFiltradas[0].value.toString());
+      // Actualiza la duracion del turno en base al deporte
+      setValue("duracionTurnoMinutos", DURACION_TURNOS_MINUTOS_OBJETO[deporteSeleccionado]);
     }
   }, [canchas, opcionesCanchasFiltradas, setValue]);
 
@@ -74,7 +88,7 @@ export const FormTurno = ({ turno, onSubmit, onCancel }: Props) => {
         <FormSelect name={"deporte"} label={"Deporte"} options={deporteOptions} error={errors.deporte} isDisabled={turno != null && turno != undefined} control={control} />
         <FormSelect name={"idCancha"} label={"Cancha"} options={turno ? [{ label: turno.nombreCancha, value: turno.id }] : opcionesCanchasFiltradas} error={errors.idCancha} isDisabled={turno != null && turno != undefined} control={control} />
         <FormInput name={"inicioTurno"} label="Inicio turno" type="datetime-local" control={control} error={errors.inicioTurno} />
-        <FormInput name={"duracionTurnoMinutos"} label="Duracion (minutos)" type="number" control={control} error={errors.duracionTurnoMinutos} />
+        <FormInput name={"duracionTurnoMinutos"} label="Duracion (minutos)" type="number" control={control} error={errors.duracionTurnoMinutos} isDisabled={true} />
         <div className="formTurno__actionButtons">
           <button type="button" className="btn btn-secondary border-radius--500" onClick={onCancel} disabled={isLoading || isLoadingCanchas}>Cancelar</button>
           <button type="submit" className="btn btn-accent border-radius--500" disabled={isLoading || isLoadingCanchas}>Enviar</button>

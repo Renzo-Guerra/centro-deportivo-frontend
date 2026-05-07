@@ -1,4 +1,4 @@
-export type OptionForSelect = {
+export type OptionForSelect<T> = {
   label: string,
-  value: string | number
+  value: T
 }
