@@ -37,7 +37,7 @@ export const FormTurno = ({ turno, onSubmit, onCancel }: Props) => {
     data: canchas,
     isLoading: isLoadingCanchas,
     error
-  } = useFetchAutomatico<Cancha[]>("/canchas/all", "GET");
+  } = useFetchAutomatico<Cancha[]>("/canchas/all?sortBy=tipo,asc&sortBy=nombre,asc", "GET");
 
   // Declaramos los valores que puede tener el select de "deporte"
   const deporteOptions: OptionForSelect<TiposCancha>[] = TIPOS_CANCHA_ARRAY.map(tipo => ({

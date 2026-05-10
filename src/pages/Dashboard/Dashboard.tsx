@@ -2,13 +2,13 @@ import { useMemo } from "react";
 import { CardTurno, Loading } from "../../components";
 import { MetricCard } from "../../components/MetricCard/MetricCard";
 import { useFetchAutomatico } from "../../hooks";
-import type { Cancha, Page, Turno } from "../../models";
+import type { Cancha, Turno } from "../../models";
 import { getTodayDateLocal, isTurnoEnCurso, isTurnoFinished } from "../../utils";
 import "./Dashboard.css";
 
 export const Dashboard = () => {
   const { data: turnos, isLoading: isLoadingTurnos, error: errorTurnos } = useFetchAutomatico<Turno[]>(`/turnos/fecha?fecha=${getTodayDateLocal()}&sortBy=inicioTurno`);
-  const { data: pageCancha, isLoading: isLoadingCanchas, error: errorCanchas } = useFetchAutomatico<Page<Cancha>>(`/canchas`);
+  const { data: canchas, isLoading: isLoadingCanchas, error: errorCanchas } = useFetchAutomatico<Cancha[]>(`/canchas/all?sortBy=tipo,asc&sortBy=nombre,asc`);
 
   const turnosEnCurso = useMemo(() => {
     return turnos ? turnos.filter(t => isTurnoEnCurso(t)) : [];
@@ -36,7 +36,7 @@ export const Dashboard = () => {
               {!errorCanchas && (
                 <>
                   <MetricCard label={"TURNOS TERMINADOS"} cantidad={turnosTerminados.length} />
-                  <MetricCard label={"CANCHAS LIBRES"} cantidad={pageCancha ? pageCancha.totalElements - turnosEnCurso.length : 0} />
+                  <MetricCard label={"CANCHAS LIBRES"} cantidad={canchas ? (canchas.length - turnosEnCurso.length) : 0} />
                 </>
               )}
             </div>
