@@ -1,10 +1,10 @@
-import type { Turno, turnoValues } from "../models";
-import { formatDateTime } from "./date.utils";
+import { TIPOS_CANCHA_ARRAY, type Turno, type turnoValues } from "../models";
+import { formatDateTime, toDateTimeLocal } from "./date.utils";
 
 export const isTurnoEnCurso = (turno: Turno) => {
   const now = new Date().getTime();
 
-  return now >= new Date(turno.inicioTurno).getTime() && now <= (new Date(turno.inicioTurno).getTime() + (turno.duracionMinutos * 60 * 1000));
+  return now >= new Date(turno.inicioTurno).getTime() && now <= (new Date(turno.inicioTurno).getTime() + (turno.duracionTurnoMinutos * 60 * 1000));
 }
 
 export const addDeporteClass = (turno: Turno) => {
@@ -23,9 +23,23 @@ export const hasSameValues = (turno: Turno | null, newData: turnoValues) => {
     turno.nombreCliente === newData.nombreCliente &&
     turno.apellidoCliente === newData.apellidoCliente &&
     turno.celularCliente === newData.celularCliente &&
-    turno.deporte === newData.deporte &&
     turno.idCancha.toString() === newData.idCancha &&
-    formatDateTime(turno.inicioTurno) === formatDateTime(newData.inicioTurno) &&
-    turno.duracionMinutos === newData.duracionTurnoMinutos
+    toDateTimeLocal(turno.inicioTurno) === toDateTimeLocal(`${newData.diaTurno}T${newData.horarioTurno}`) &&
+    turno.duracionTurnoMinutos === newData.duracionTurnoMinutos
   );
+}
+
+export const mapperTurnoValuesToTurno = (data: turnoValues): Turno => {
+  return {
+    id: 0,
+    nombreCliente: data.nombreCliente,
+    apellidoCliente: data.apellidoCliente,
+    celularCliente: data.celularCliente,
+    creacionTurno: "",
+    idCancha: Number(data.idCancha),
+    inicioTurno: data.diaTurno + "T" + data.horarioTurno,
+    duracionTurnoMinutos: data.duracionTurnoMinutos,
+    nombreCancha: "",
+    deporte: TIPOS_CANCHA_ARRAY[0]
+  }
 }

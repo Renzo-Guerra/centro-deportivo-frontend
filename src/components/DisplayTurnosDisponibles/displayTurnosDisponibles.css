@@ -1,0 +1,18 @@
+.turnos-disponibles__container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  padding-top: 1rem;
+}
+
+/* .turnos-disponibles__horario{
+  padding: ;
+} */
+.turnos-disponibles__container .turnos-disponibles__horario:disabled {
+  text-decoration: line-through;
+}
+
+.turnos-disponibles__container .horario--selected:checked+button {
+  outline: solid 1px black !important;
+  background-color: var(--color-accent--600);
+}

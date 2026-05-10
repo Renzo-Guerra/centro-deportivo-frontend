@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useFetchManual } from "../../hooks";
-import type { Page, Turno, turnoValues } from "../../models";
+import { type Page, type Turno, type turnoValues } from "../../models";
 import "./turnos.page.css";
 import { BasicModal, FormTurno, Loading, TurnoDisplay } from "../../components";
 import toast from "react-hot-toast";
 import { axiosInterceptor } from "../../interceptors";
-import { hasSameValues } from "../../utils";
+import { hasSameValues, mapperTurnoValuesToTurno } from "../../utils";
 
 export const TurnosPage = () => {
   const { data: pageTurno, isLoading, error, submitRequest: loadTurnos } = useFetchManual<Page<Turno>>();
@@ -46,8 +46,9 @@ export const TurnosPage = () => {
       return;
     }
 
+    const editedTurno: Turno = mapperTurnoValuesToTurno(data);
 
-    toast.promise(async () => axiosInterceptor.put("/turnos/" + selectedTurno?.id, data),
+    toast.promise(async () => axiosInterceptor.put("/turnos/" + selectedTurno?.id, editedTurno),
       {
         loading: "Enviando",
         success: "Turno editado exitosamente!",
@@ -58,8 +59,9 @@ export const TurnosPage = () => {
   }
 
   const submitAdd = (data: turnoValues) => {
-    // TODO: El turno se crea, pero el problema es si se superpone con otros turnos...
-    toast.promise(async () => axiosInterceptor.post("/turnos", data),
+    const newTurno: Turno = mapperTurnoValuesToTurno(data);
+
+    toast.promise(async () => axiosInterceptor.post("/turnos", newTurno),
       {
         loading: "Enviando",
         success: "Turno creado exitosamente!",

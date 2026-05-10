@@ -110,3 +110,7 @@
 .voley {
   color: rgb(128, 0, 179);
 }
+
+.hidden {
+  display: none;
+}

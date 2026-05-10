@@ -5,9 +5,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FormInput } from "../FormInput/FormInput";
 import { FormSelect } from "../FormSelect/FormSelect";
 import type { OptionForSelect } from "../../models/types/optionForSelect";
-import { toDatetimeLocal } from "../../utils";
-import { useFetchAutomatico } from "../../hooks";
-import { useEffect, useMemo } from "react";
+import { formatDateTime, toDateLocal } from "../../utils";
+import { useFetchAutomatico, useFetchManual } from "../../hooks";
+import { useEffect, useMemo, useState } from "react";
+import { Loading } from "../Loading/Loading";
+import { DisplayTurnosDisponibles } from "../DisplayTurnosDisponibles/DisplayTurnosDisponibles";
 
 interface Props {
   turno?: Turno | null,
@@ -16,6 +18,21 @@ interface Props {
 }
 
 export const FormTurno = ({ turno, onSubmit, onCancel }: Props) => {
+  const [selectedHorario, setSelectedHorario] = useState<string>("");
+  const [selectedCancha, setSelectedCancha] = useState<string>("");
+
+  if (turno && !selectedHorario && !selectedCancha) {
+    setSelectedHorario(formatDateTime(turno.inicioTurno).split("T")[1]);
+    setSelectedCancha(String(turno.id));
+  }
+
+  const {
+    data: turnosAgendados,
+    isLoading: isLoadingTurnos,
+    error: errorTurnosAgendados,
+    submitRequest: findTurnosAgendados
+  } = useFetchManual<Turno[]>();
+
   const {
     data: canchas,
     isLoading: isLoadingCanchas,
@@ -40,16 +57,23 @@ export const FormTurno = ({ turno, onSubmit, onCancel }: Props) => {
       apellidoCliente: turno?.apellidoCliente,
       celularCliente: turno?.celularCliente,
       deporte: turno?.deporte ?? deporteOptions[0].value,
-      // Al crearse un nuevo turno, necesitamos esperar los id's de la base de datos
-      // Se inicializa con "" y se actualiza con un useEffect 
-      // al llegar las canchas por el fetch
+      duracionTurnoMinutos: turno?.duracionTurnoMinutos ?? DURACION_TURNOS_MINUTOS_OBJETO[TIPOS_CANCHA_ARRAY[0]],
+      diaTurno: turno?.inicioTurno
+        ? toDateLocal(turno.inicioTurno)
+        : toDateLocal(new Date()),
+      horarioTurno: turno?.inicioTurno
+        ? formatDateTime(turno.inicioTurno).split("T")[1]
+        : undefined,
       idCancha: turno?.idCancha.toString() ?? "",
-      inicioTurno: turno
-        ? toDatetimeLocal(turno.inicioTurno)
-        : toDatetimeLocal(new Date()),
-      duracionTurnoMinutos: turno?.duracionMinutos ?? DURACION_TURNOS_MINUTOS_OBJETO[TIPOS_CANCHA_ARRAY[0]]
     }
   });
+
+  const handleClick = (idCancha: string | number, horarioSeleccionado: string) => {
+    setValue("idCancha", String(idCancha));
+    setValue("horarioTurno", horarioSeleccionado);
+    setSelectedHorario(horarioSeleccionado);
+    setSelectedCancha(String(idCancha));
+  }
 
   // Declaramos un observer para actualizar 
   // otros datos del form cuando "deporte" cambie de valor
@@ -58,37 +82,87 @@ export const FormTurno = ({ turno, onSubmit, onCancel }: Props) => {
     name: "deporte",
   });
 
+
+  // Declaramos un observer para actualizar 
+  // otros datos del form cuando "deporte" cambie de valor
+  const diaSeleccionado = useWatch({
+    control,
+    name: "diaTurno",
+  });
+
   // Filtra las canchas disponibles a elegir en base al "deporte" seleccionado
-  const opcionesCanchasFiltradas = useMemo((): OptionForSelect<string | number>[] => {
+  const canchasFiltradas = useMemo((): Cancha[] => {
     if (!canchas || !deporteSeleccionado) return [];
 
-    return canchas
-      .filter(cancha => cancha.tipo == deporteSeleccionado)
-      .map(c => ({
-        label: c.nombre,
-        value: c.id
-      }));
-  }, [canchas, deporteSeleccionado]);
+    return canchas.filter(cancha => cancha.tipo == deporteSeleccionado);
+  }, [canchas, deporteSeleccionado, selectedHorario]);
 
   useEffect(() => {
-    if (!turno && canchas && opcionesCanchasFiltradas.length > 0) {
-      // Selecciona el idCancha del primer elemento del select cancha
-      setValue("idCancha", opcionesCanchasFiltradas[0].value.toString());
+    if (!turno && canchas && canchasFiltradas.length > 0) {
       // Actualiza la duracion del turno en base al deporte
       setValue("duracionTurnoMinutos", DURACION_TURNOS_MINUTOS_OBJETO[deporteSeleccionado]);
     }
-  }, [canchas, opcionesCanchasFiltradas, setValue]);
+  }, [canchas, canchasFiltradas, setValue]);
+
+  useEffect(() => {
+    // Fail first
+    if (!diaSeleccionado || !deporteSeleccionado) return;
+    setSelectedHorario("");
+    setSelectedCancha("");
+    // Se cargan los turnos ordenados por idCancha
+    findTurnosAgendados(`/turnos/fecha?fecha=${diaSeleccionado}&sortBy=inicioTurno`);
+
+    // No se incluye "deporteSeleccionado" porque el fetch 
+    // busca directamente TODOS los turnos del dia seleccionado.
+    // Se filtran/ordenan del lado del cliente
+  }, [diaSeleccionado]);
 
   return (
     <>
-      <form className="formTurno form" onSubmit={handleSubmit((data: turnoValues) => onSubmit(data))}>
+      <form className="form formTurno" onSubmit={handleSubmit((data: turnoValues) => onSubmit(data))}>
         <FormInput name={"nombreCliente"} label="Nombre" type="text" control={control} error={errors.nombreCliente} />
         <FormInput name={"apellidoCliente"} label="Apellido" type="text" control={control} error={errors.apellidoCliente} />
         <FormInput name={"celularCliente"} label="Celular" type="text" control={control} error={errors.celularCliente} />
         <FormSelect name={"deporte"} label={"Deporte"} options={deporteOptions} error={errors.deporte} isDisabled={turno != null && turno != undefined} control={control} />
-        <FormSelect name={"idCancha"} label={"Cancha"} options={turno ? [{ label: turno.nombreCancha, value: turno.id }] : opcionesCanchasFiltradas} error={errors.idCancha} isDisabled={turno != null && turno != undefined} control={control} />
-        <FormInput name={"inicioTurno"} label="Inicio turno" type="datetime-local" control={control} error={errors.inicioTurno} />
         <FormInput name={"duracionTurnoMinutos"} label="Duracion (minutos)" type="number" control={control} error={errors.duracionTurnoMinutos} isDisabled={true} />
+        <FormInput name={"diaTurno"} label="Día" type="date" control={control} error={errors.diaTurno} />
+        {
+          /* 
+            * Filtrar las canchas para obtener solo las que sean del 
+            deporte seleccionado.
+            - En base a esas canchas buscar en la db los turnos de
+            esas canchas en ese dia.
+            - Por cada cancha crear 1 componente por cada horario del turno, 
+            el turno puede estar tanto ocupado o disponible (states)
+          */
+        }
+        {isLoadingTurnos && (
+          <Loading mensaje="Cargando turnos..." />
+        )}
+
+        {errorTurnosAgendados && (
+          <p>Error al cargar los turnos...</p>
+        )}
+
+        {!isLoadingTurnos && turnosAgendados && (
+          // Por cada cancha mostrar el nombre de cancha, y los turnos
+          <div className="formTurno__turnosDisponibles_container">
+            {canchasFiltradas.map(cancha => (
+              <DisplayTurnosDisponibles
+                key={cancha.id}
+                cancha={cancha}
+                idSelectedCancha={selectedCancha}
+                selectedHorario={selectedHorario}
+                idSelectedTurno={turno ? String(turno.id) : ""}
+                turnos={turnosAgendados}
+                onClick={handleClick} />
+            ))}
+          </div>
+        )}
+        <div className="hidden">
+          <FormInput name={"horarioTurno"} label="Horario" type="time" control={control} error={errors.horarioTurno} />
+        </div>
+
         <div className="formTurno__actionButtons">
           <button type="button" className="btn btn-secondary border-radius--500" onClick={onCancel} disabled={isLoading || isLoadingCanchas}>Cancelar</button>
           <button type="submit" className="btn btn-accent border-radius--500" disabled={isLoading || isLoadingCanchas}>Enviar</button>
