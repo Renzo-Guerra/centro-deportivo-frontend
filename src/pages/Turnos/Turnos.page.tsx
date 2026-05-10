@@ -91,12 +91,12 @@ export const TurnosPage = () => {
           <p>{error.message}</p>
         )}
         <button className="btn btn-accent border-radius--500 btn-crear-turno" onClick={() => setIsModalAddActive(true)}>Agregar turno</button>
-        {!isLoading && !error && (
+        {!isLoading && !error && pageTurno && (
           <div className="turnos-container">
-            {pageTurno?.totalElements == 0 && (
+            {pageTurno.totalElements == 0 && (
               <p>Parece que no hay turnos cargados en el sistema!</p>
             )}
-            {pageTurno?.content.map(turno => (
+            {pageTurno.content.map(turno => (
               <TurnoDisplay key={turno.id} turno={turno} >
                 <div className="turnos-page__action-buttons">
                   <button className="btn btn-secondary border-radius--500" onClick={() => onClickEdit(turno)}>Editar</button>
