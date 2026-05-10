@@ -6,7 +6,7 @@ interface Props<T extends FieldValues> {
   name: Path<T>,
   label: string,
   control: Control<T>
-  options: OptionForSelect[],
+  options: OptionForSelect<string | number>[],
   error: FieldError | undefined,
   isDisabled?: boolean,
 }

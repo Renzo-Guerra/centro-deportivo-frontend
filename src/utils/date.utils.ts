@@ -12,7 +12,7 @@ const format = (date: string | Date) => {
 }
 
 /**
- * Dada una fecha la parsea para devolver YYYY-MM-ddThh:mm
+ * Dada una fecha la parsea para devolver yyyy-MM-ddThh:mm
  * @param date Fecha a transformar
  * @returns string hh-mm
  */
@@ -25,9 +25,9 @@ export const formatDateTime = (date: Date | string): string => {
 }
 
 /**
- * Dada una fecha la parsea para devolver dd-MM-YYYY
+ * Dada una fecha la parsea para devolver dd-MM-yyyy
  * @param date Fecha a transformar
- * @returns string dd-MM-YYYY
+ * @returns string dd-MM-yyyy
  */
 export const formatDate = (date: string | Date): string => {
   const { year, month, day } = format(date);
@@ -36,8 +36,8 @@ export const formatDate = (date: string | Date): string => {
 }
 
 /**
- * Crea un objeto fecha con la hora local y devuelve una string con el formato YYYY-MM-dd
- * @returns string fecha con formato YYYY-MM-dd
+ * Crea un objeto fecha con la hora local y devuelve una string con el formato yyyy-MM-dd
+ * @returns string fecha con formato yyyy-MM-dd
  */
 export const getTodayDateLocal = (): string => {
   const { year, month, day } = format(new Date());
@@ -46,17 +46,29 @@ export const getTodayDateLocal = (): string => {
 }
 
 /**
- * Crea un objeto fecha con la hora local y devuelve una string con el formato YYYY-MM-ddThh:mm
- * @returns string fecha con formato YYYY-MM-ddThh:mm
+ * Crea un objeto fecha con la hora local y devuelve una string con el formato yyyy-MM-dd
+ * @returns string fecha con formato yyyy-MM-dd
  */
-export const toDatetimeLocal = (date: string | Date): string => {
+export const toDateLocal = (date: string | Date): string => {
+  const { year, month, day } = format(new Date(date));
+
+  return `${year}-${month}-${day}`;
+}
+
+/**
+ * Crea un objeto fecha con la hora local y devuelve una string con el formato yyyy-MM-ddThh:mm
+ * @returns string fecha con formato yyyy-MM-ddThh:mm
+ */
+export const toDateTimeLocal = (date: string | Date): string => {
   const { year, month, day, hours, minutes } = format(new Date(date));
 
   return `${year}-${month}-${day}T${hours}:${minutes}`;
 }
 
-export const addMinutes = (date: Date | string, minutes: number): Date => {
-  let fecha = new Date(date);
+export const addMinutes = (date: Date | string, cantMinutes: number): string => {
+  let fecha = new Date(new Date(date).getTime() + cantMinutes * 60000);
 
-  return new Date(fecha.getTime() + minutes * 60000);
+  const { year, month, day, hours, minutes } = format(fecha);
+
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
 };

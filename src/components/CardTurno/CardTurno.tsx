@@ -16,8 +16,8 @@ export const CardTurno = ({ turno, resaltado = false }: Props) => {
           <p className={`datos__cancha`}><span className={`${addDeporteClass(turno)}`}>{turno.deporte.toLowerCase()}</span> - {turno.nombreCancha}</p>
         </div>
         <div className="card_container__horarios">
-          <span>{formatDateTime(turno.inicioTurno).split("T")[1]} - {formatDateTime(addMinutes(turno.inicioTurno, turno.duracionMinutos)).split("T")[1]}</span>
-          <span>{turno.duracionMinutos} min</span>
+          <span>{formatDateTime(turno.inicioTurno).split("T")[1]} - {formatDateTime(addMinutes(turno.inicioTurno, turno.duracionTurnoMinutos)).split("T")[1]}</span>
+          <span>{turno.duracionTurnoMinutos} min</span>
         </div>
       </div >
     </>
