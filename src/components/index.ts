@@ -12,4 +12,5 @@ export * from "./Loading/Loading";
 export * from "./MetricCard/MetricCard";
 export * from "./Modals/BasicModal/BasicModal";
 export * from "./NavBar/NavBar";
+export * from "./PageableFooter/PageableFooter";
 export * from "./TurnoDisplay/TurnoDisplay";

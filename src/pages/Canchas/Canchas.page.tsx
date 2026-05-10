@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { CanchaDisplay, BasicModal, TurnoDisplay, Loading } from "../../components";
+import { CanchaDisplay, BasicModal, TurnoDisplay, Loading, PageableFooter } from "../../components";
 import { useFetchManual } from "../../hooks";
 import type { Cancha, canchaValues, Page, Turno } from "../../models";
 import "./Canchas.page.css";
@@ -187,15 +187,10 @@ export const CanchasPage = () => {
                     {pageTurno?.content.map(turno => (
                       <TurnoDisplay key={turno.id} turno={turno} />
                     ))}
-
-                    {/* Tranquilamente podria ser un componente */}
-                    {pageTurno.totalPages > 0 && (
-                      <div className="form-pageable-actionBtns-container">
-                        <button className="btn btn-primary border-radius--500" onClick={traerPaginaAnterior} disabled={pageTurno.pageNo == 0}>Anterior</button>
-                        <p>Página {pageTurno.pageNo + 1} de {pageTurno.totalPages}</p>
-                        <button className="btn btn-primary border-radius--500" onClick={traerPaginaSiguiente} disabled={pageTurno.last}>Siguiente</button>
-                      </div>
-                    )}
+                    <PageableFooter
+                      page={pageTurno}
+                      onNext={traerPaginaAnterior}
+                      onPrevious={traerPaginaSiguiente} />
                   </>
                 )}
               </div>

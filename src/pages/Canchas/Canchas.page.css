@@ -32,9 +32,3 @@
   display: grid;
   gap: 1rem;
 }
-
-.form-pageable-actionBtns-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
