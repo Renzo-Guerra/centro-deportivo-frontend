@@ -1,10 +1,20 @@
 import { TIPOS_CANCHA_ARRAY, type Turno, type turnoValues } from "../models";
-import { formatDateTime, toDateTimeLocal } from "./date.utils";
+import { toDateTimeLocal } from "./date.utils";
 
 export const isTurnoEnCurso = (turno: Turno) => {
   const now = new Date().getTime();
 
   return now >= new Date(turno.inicioTurno).getTime() && now <= (new Date(turno.inicioTurno).getTime() + (turno.duracionTurnoMinutos * 60 * 1000));
+}
+
+export const isTurnoFinished = (turno: Turno) => {
+  const inicioMs = new Date(turno.inicioTurno).getTime();
+  const duracionMs = turno.duracionTurnoMinutos * 60 * 1000;
+  const finTurnoMs = inicioMs + duracionMs;
+
+  const ahoraMs = Date.now();
+
+  return ahoraMs > finTurnoMs;
 }
 
 export const addDeporteClass = (turno: Turno) => {
