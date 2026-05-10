@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useFetchManual } from "../../hooks";
-import { type Page, type Turno, type turnoValues } from "../../models";
+import { type Turno, type turnoValues } from "../../models";
 import "./turnos.page.css";
 import { BasicModal, FormTurno, Loading, TurnoDisplay } from "../../components";
 import toast from "react-hot-toast";
@@ -8,14 +8,17 @@ import { axiosInterceptor } from "../../interceptors";
 import { hasSameValues, mapperTurnoValuesToTurno } from "../../utils";
 
 export const TurnosPage = () => {
-  const { data: pageTurno, isLoading, error, submitRequest: loadTurnos } = useFetchManual<Page<Turno>>();
+  const { data: turnos, isLoading, error, submitRequest: loadTurnos } = useFetchManual<Turno[]>();
+
   const [selectedTurno, setSelectedTurno] = useState<Turno | null>(null);
   const [isModalAddActive, setIsModalAddActive] = useState<boolean>(false);
   const [isModalDeleteActive, setIsModalDeleteActive] = useState<boolean>(false);
   const [isModalEditActive, setIsModalEditActive] = useState<boolean>(false);
 
+  const turnosUrl = "/turnos/all?sortBy=inicioTurno,ASC&sortBy=finTurno,ASC&sortBy=inicioTurno,ASC";
+
   useEffect(() => {
-    loadTurnos("/turnos", "GET");
+    loadTurnos(turnosUrl, "GET");
   }, []);
 
   const onClickDelete = (turno: Turno) => {
@@ -30,7 +33,7 @@ export const TurnosPage = () => {
         success: "Turno eliminado exitosamente!",
       }).then(() => {
         closeModal();
-        loadTurnos("/turnos", "GET");
+        loadTurnos(turnosUrl, "GET");
       });
   }
 
@@ -54,7 +57,7 @@ export const TurnosPage = () => {
         success: "Turno editado exitosamente!",
       }).then(() => {
         closeModal();
-        loadTurnos("/turnos", "GET");
+        loadTurnos(turnosUrl, "GET");
       });
   }
 
@@ -68,7 +71,7 @@ export const TurnosPage = () => {
         // No es necesario un error porque axiosInterceptor lo maneja
       }).then(() => {
         closeModal();
-        loadTurnos("/turnos", "GET");
+        loadTurnos(turnosUrl, "GET");
       });
     // No es necesario el catch ya que el axiosInterceptor lo maneja
   }
@@ -91,12 +94,12 @@ export const TurnosPage = () => {
           <p>{error.message}</p>
         )}
         <button className="btn btn-accent border-radius--500 btn-crear-turno" onClick={() => setIsModalAddActive(true)}>Agregar turno</button>
-        {!isLoading && !error && pageTurno && (
+        {!isLoading && !error && turnos && (
           <div className="turnos-container">
-            {pageTurno.totalElements == 0 && (
+            {turnos.length == 0 && (
               <p>Parece que no hay turnos cargados en el sistema!</p>
             )}
-            {pageTurno.content.map(turno => (
+            {turnos.map(turno => (
               <TurnoDisplay key={turno.id} turno={turno} >
                 <div className="turnos-page__action-buttons">
                   <button className="btn btn-secondary border-radius--500" onClick={() => onClickEdit(turno)}>Editar</button>
