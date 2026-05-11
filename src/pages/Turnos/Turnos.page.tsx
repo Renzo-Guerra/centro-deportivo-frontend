@@ -134,7 +134,7 @@ export const TurnosPage = () => {
     const updatedParams = params.map(param => {
       if (param.includes("inicioTurno,ASC")) {
         return param.replace(",ASC", ",DESC");
-      } else if (param.includes("inicioTurno,ASC")) {
+      } else if (param.includes("inicioTurno,DESC")) {
         return param.replace(",DESC", ",ASC");
       }
       return param; // Si no es el que queremos, lo devolvemos tal cual
