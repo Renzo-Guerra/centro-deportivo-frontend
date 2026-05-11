@@ -1,24 +1,25 @@
 import { useEffect, useState } from "react";
 import { useFetchManual } from "../../hooks";
-import { type Turno, type turnoValues } from "../../models";
+import { type Page, type Turno, type turnoValues } from "../../models";
 import "./turnos.page.css";
-import { BasicModal, FormTurno, Loading, TurnoDisplay } from "../../components";
+import { BasicModal, FormTurno, Loading, PageableFooter, TurnoDisplay } from "../../components";
 import toast from "react-hot-toast";
 import { axiosInterceptor } from "../../interceptors";
 import { hasSameValues, mapperTurnoValuesToTurno } from "../../utils";
 
 export const TurnosPage = () => {
-  const { data: turnos, isLoading, error, submitRequest: loadTurnos } = useFetchManual<Turno[]>();
+  const { data: pageTurnos, isLoading, error, submitRequest: loadTurnos } = useFetchManual<Page<Turno>>();
 
   const [selectedTurno, setSelectedTurno] = useState<Turno | null>(null);
   const [isModalAddActive, setIsModalAddActive] = useState<boolean>(false);
   const [isModalDeleteActive, setIsModalDeleteActive] = useState<boolean>(false);
   const [isModalEditActive, setIsModalEditActive] = useState<boolean>(false);
+  const defaultTurnosUrl = new URL(axiosInterceptor.defaults.baseURL + "/turnos?sortBy=inicioTurno,ASC&sortBy=finTurno,ASC&pageNo=0&pageSize=2");
 
-  const turnosUrl = "/turnos/all?sortBy=inicioTurno,ASC&sortBy=finTurno,ASC&sortBy=inicioTurno,ASC";
+  const [turnosUrl, setTurnosUrl] = useState<URL>(defaultTurnosUrl);
 
   useEffect(() => {
-    loadTurnos(turnosUrl, "GET");
+    loadTurnos(turnosUrl.href, "GET");
   }, []);
 
   const onClickDelete = (turno: Turno) => {
@@ -33,7 +34,7 @@ export const TurnosPage = () => {
         success: "Turno eliminado exitosamente!",
       }).then(() => {
         closeModal();
-        loadTurnos(turnosUrl, "GET");
+        loadTurnos(turnosUrl.href, "GET");
       });
   }
 
@@ -57,7 +58,7 @@ export const TurnosPage = () => {
         success: "Turno editado exitosamente!",
       }).then(() => {
         closeModal();
-        loadTurnos(turnosUrl, "GET");
+        loadTurnos(turnosUrl.href, "GET");
       });
   }
 
@@ -71,7 +72,7 @@ export const TurnosPage = () => {
         // No es necesario un error porque axiosInterceptor lo maneja
       }).then(() => {
         closeModal();
-        loadTurnos(turnosUrl, "GET");
+        loadTurnos(turnosUrl.href, "GET");
       });
     // No es necesario el catch ya que el axiosInterceptor lo maneja
   }
@@ -81,6 +82,30 @@ export const TurnosPage = () => {
     setIsModalAddActive(false);
     setIsModalDeleteActive(false);
     setIsModalEditActive(false);
+  }
+
+  const traerPaginaAnterior = () => {
+    if (!pageTurnos || pageTurnos.pageNo === 0) {
+      console.error("Error: Ya estamos en la primera página!");
+      return;
+    }
+
+    let aux = turnosUrl;
+    aux.searchParams.set("pageNo", `${pageTurnos.pageNo - 1}`);
+    setTurnosUrl(aux);
+    loadTurnos(turnosUrl.href, "GET");
+  }
+
+  const traerPaginaSiguiente = () => {
+    if (!pageTurnos || pageTurnos.last) {
+      console.error("Error: Ya estamos en la última página!");
+      return;
+    }
+
+    let aux = turnosUrl;
+    aux.searchParams.set("pageNo", `${pageTurnos.pageNo + 1}`);
+    setTurnosUrl(aux);
+    loadTurnos(turnosUrl.href, "GET");
   }
 
   return (
@@ -94,19 +119,25 @@ export const TurnosPage = () => {
           <p>{error.message}</p>
         )}
         <button className="btn btn-accent border-radius--500 btn-crear-turno" onClick={() => setIsModalAddActive(true)}>Agregar turno</button>
-        {!isLoading && !error && turnos && (
+        {!isLoading && !error && pageTurnos && (
           <div className="turnos-container">
-            {turnos.length == 0 && (
+            {pageTurnos.totalElements == 0 && (
               <p>Parece que no hay turnos cargados en el sistema!</p>
             )}
-            {turnos.map(turno => (
-              <TurnoDisplay key={turno.id} turno={turno} >
-                <div className="turnos-page__action-buttons">
-                  <button className="btn btn-secondary border-radius--500" onClick={() => onClickEdit(turno)}>Editar</button>
-                  <button className="btn btn-danger border-radius--500" onClick={() => onClickDelete(turno)}>Eliminar</button>
-                </div>
-              </TurnoDisplay>
-            ))}
+            {pageTurnos.content && (
+              <>
+                {pageTurnos.content.map(turno => (
+                  <TurnoDisplay key={turno.id} turno={turno} >
+                    <div className="turnos-page__action-buttons">
+                      <button className="btn btn-secondary border-radius--500" onClick={() => onClickEdit(turno)}>Editar</button>
+                      <button className="btn btn-danger border-radius--500" onClick={() => onClickDelete(turno)}>Eliminar</button>
+                    </div>
+                  </TurnoDisplay>
+                ))}
+                <PageableFooter page={pageTurnos} onNext={traerPaginaSiguiente} onPrevious={traerPaginaAnterior} />
+              </>
+            )}
+
           </div>
         )}
 
