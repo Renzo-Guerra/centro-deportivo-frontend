@@ -14,13 +14,13 @@ export const TurnosPage = () => {
   const [isModalAddActive, setIsModalAddActive] = useState<boolean>(false);
   const [isModalDeleteActive, setIsModalDeleteActive] = useState<boolean>(false);
   const [isModalEditActive, setIsModalEditActive] = useState<boolean>(false);
-  const defaultTurnosUrl = new URL(axiosInterceptor.defaults.baseURL + "/turnos?sortBy=inicioTurno,ASC&sortBy=finTurno,ASC&pageNo=0&pageSize=2");
+  const defaultTurnosUrl = new URL(axiosInterceptor.defaults.baseURL + "/turnos?sortBy=inicioTurno,ASC&sortBy=finTurno,ASC&pageNo=0&pageSize=10");
 
   const [turnosUrl, setTurnosUrl] = useState<URL>(defaultTurnosUrl);
 
   useEffect(() => {
     loadTurnos(turnosUrl.href, "GET");
-  }, []);
+  }, [turnosUrl]);
 
   const onClickDelete = (turno: Turno) => {
     setSelectedTurno(turno);
@@ -90,10 +90,9 @@ export const TurnosPage = () => {
       return;
     }
 
-    let aux = turnosUrl;
+    let aux = new URL(turnosUrl);
     aux.searchParams.set("pageNo", `${pageTurnos.pageNo - 1}`);
     setTurnosUrl(aux);
-    loadTurnos(turnosUrl.href, "GET");
   }
 
   const traerPaginaSiguiente = () => {
@@ -102,10 +101,44 @@ export const TurnosPage = () => {
       return;
     }
 
-    let aux = turnosUrl;
+    let aux = new URL(turnosUrl);
     aux.searchParams.set("pageNo", `${pageTurnos.pageNo + 1}`);
     setTurnosUrl(aux);
-    loadTurnos(turnosUrl.href, "GET");
+  }
+
+  const reverseOrder = () => {
+    if (!pageTurnos) {
+      console.error("Error: Los turnos aun no se han cargado!");
+      return;
+    }
+
+    // Si bien nos traemos todos, solo nos importa el primero (inicioTurno)
+    const params: string[] = turnosUrl.searchParams.getAll("sortBy");
+    if (params.length == 0) { return; }
+
+    const updatedParams = params.map(param => {
+      if (param.includes("inicioTurno,ASC")) {
+        return param.replace(",ASC", ",DESC");
+      } else if (param.includes("inicioTurno,ASC")) {
+        return param.replace(",DESC", ",ASC");
+      }
+      return param; // Si no es el que queremos, lo devolvemos tal cual
+    });
+
+    let aux = new URL(turnosUrl);
+
+    aux.searchParams.delete("sortBy");
+
+    updatedParams.forEach(param => {
+      aux.searchParams.append("sortBy", param);
+    });
+
+    // Mandamos al usuario a la pagina 0
+    if (aux.searchParams.has("pageNo")) {
+      aux.searchParams.set("pageNo", "0");
+    }
+
+    setTurnosUrl(aux);
   }
 
   return (
@@ -126,6 +159,7 @@ export const TurnosPage = () => {
             )}
             {pageTurnos.content && (
               <>
+                <button className="btn btn-primary border-radius--500 turnos-container__reverseBtn" onClick={reverseOrder}>Ver mas {turnosUrl.searchParams.get("sortBy")?.includes("ASC") ? "antiguos" : "nuevos"}</button>
                 {pageTurnos.content.map(turno => (
                   <TurnoDisplay key={turno.id} turno={turno} >
                     <div className="turnos-page__action-buttons">
