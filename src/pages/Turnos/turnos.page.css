@@ -1,7 +1,3 @@
-.btn-crear-turno {
-  width: fit-content;
-}
-
 .turnos-container {
   display: grid;
   gap: 1rem;

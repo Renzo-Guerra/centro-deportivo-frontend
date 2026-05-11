@@ -1,14 +1,17 @@
-import { useMemo } from "react";
-import { CardTurno, Loading } from "../../components";
+import { useMemo, useState } from "react";
+import { BasicModal, CardTurno, FormTurno, Loading } from "../../components";
 import { MetricCard } from "../../components/MetricCard/MetricCard";
 import { useFetchAutomatico } from "../../hooks";
-import type { Cancha, Turno } from "../../models";
-import { getTodayDateLocal, isTurnoEnCurso, isTurnoFinished } from "../../utils";
+import type { Cancha, Turno, turnoValues } from "../../models";
+import { getTodayDateLocal, isTurnoEnCurso, isTurnoFinished, mapperTurnoValuesToTurno } from "../../utils";
 import "./Dashboard.css";
+import { axiosInterceptor } from "../../interceptors";
+import toast from "react-hot-toast";
 
 export const Dashboard = () => {
   const { data: turnos, isLoading: isLoadingTurnos, error: errorTurnos } = useFetchAutomatico<Turno[]>(`/turnos/fecha?fecha=${getTodayDateLocal()}&sortBy=inicioTurno`);
   const { data: canchas, isLoading: isLoadingCanchas, error: errorCanchas } = useFetchAutomatico<Cancha[]>(`/canchas/all?sortBy=tipo,asc&sortBy=nombre,asc`);
+  const [isModalAddActive, setIsModalAddActive] = useState<boolean>(false);
 
   const turnosEnCurso = useMemo(() => {
     return turnos ? turnos.filter(t => isTurnoEnCurso(t)) : [];
@@ -17,6 +20,20 @@ export const Dashboard = () => {
   const turnosTerminados = useMemo(() => {
     return turnos ? turnos.filter(t => isTurnoFinished(t)) : [];
   }, [turnos]);
+
+  const submitAdd = (data: turnoValues) => {
+    const newTurno: Turno = mapperTurnoValuesToTurno(data);
+
+    toast.promise(async () => axiosInterceptor.post("/turnos", newTurno),
+      {
+        loading: "Enviando",
+        success: "Turno creado exitosamente!",
+        // No es necesario un error porque axiosInterceptor lo maneja
+      }).then(() => {
+        setIsModalAddActive(false);
+      });
+    // No es necesario el catch ya que el axiosInterceptor lo maneja
+  }
 
   return (
     <>
@@ -40,6 +57,8 @@ export const Dashboard = () => {
                 </>
               )}
             </div>
+            <button className="btn btn-accent border-radius--500 btn-crear-turno" onClick={() => setIsModalAddActive(true)}>Agregar turno</button>
+
             <div className="dashboard__summary-container">
               <div className="dashboard__summary__turnos-del-dia">
                 <h2>Turnos del dia</h2>
@@ -61,6 +80,13 @@ export const Dashboard = () => {
               </div>
             </div>
           </>
+        )}
+        {isModalAddActive && (
+          <BasicModal titulo="Crear turno" closeModal={() => setIsModalAddActive(false)}>
+            <FormTurno
+              onSubmit={(data: turnoValues) => submitAdd(data)}
+              onCancel={() => setIsModalAddActive(false)} />
+          </BasicModal>
         )}
       </div>
     </>

@@ -6,6 +6,10 @@
   justify-self: center;
 }
 
+.btn-crear-turno {
+  justify-self: end;
+}
+
 .dashboard__summary-container {
   display: grid;
   gap: 1rem;

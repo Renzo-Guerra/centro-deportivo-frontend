@@ -12,7 +12,6 @@ export const TurnosPage = () => {
   const { data: pageTurnos, isLoading, error, submitRequest: loadTurnos } = useFetchManual<Page<Turno>>();
 
   const [selectedTurno, setSelectedTurno] = useState<Turno | null>(null);
-  const [isModalAddActive, setIsModalAddActive] = useState<boolean>(false);
   const [isModalDeleteActive, setIsModalDeleteActive] = useState<boolean>(false);
   const [isModalEditActive, setIsModalEditActive] = useState<boolean>(false);
   const [isModalDateRangeActive, setIsModalDateRangeActive] = useState<boolean>(false);
@@ -75,24 +74,8 @@ export const TurnosPage = () => {
       });
   }
 
-  const submitAdd = (data: turnoValues) => {
-    const newTurno: Turno = mapperTurnoValuesToTurno(data);
-
-    toast.promise(async () => axiosInterceptor.post("/turnos", newTurno),
-      {
-        loading: "Enviando",
-        success: "Turno creado exitosamente!",
-        // No es necesario un error porque axiosInterceptor lo maneja
-      }).then(() => {
-        closeModal();
-        loadTurnos(turnosUrl.href, "GET");
-      });
-    // No es necesario el catch ya que el axiosInterceptor lo maneja
-  }
-
   const closeModal = () => {
     setSelectedTurno(null);
-    setIsModalAddActive(false);
     setIsModalDeleteActive(false);
     setIsModalEditActive(false);
     setIsModalDateRangeActive(false);
@@ -178,7 +161,7 @@ export const TurnosPage = () => {
         {!isLoading && error && (
           <p>{error.message}</p>
         )}
-        <button className="btn btn-accent border-radius--500 btn-crear-turno" onClick={() => setIsModalAddActive(true)}>Agregar turno</button>
+
         {!isLoading && !error && pageTurnos && (
           <div className="turnos-container">
             {pageTurnos.totalElements == 0 && (
@@ -219,14 +202,6 @@ export const TurnosPage = () => {
                 <button className="btn btn-danger border-radius--500" onClick={() => selectedTurno ? submitDelete(selectedTurno.id) : ""}>Eliminar</button>
               </div>
             </div>
-          </BasicModal>
-        )}
-
-        {isModalAddActive && (
-          <BasicModal titulo="Crear turno" closeModal={closeModal}>
-            <FormTurno
-              onSubmit={(data: turnoValues) => submitAdd(data)}
-              onCancel={closeModal} />
           </BasicModal>
         )}
 
