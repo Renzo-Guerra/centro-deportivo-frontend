@@ -8,8 +8,10 @@
   background-color: inherit;
 }
 
-.turnos-container__reverseBtn {
-  justify-self: end;
+.turnos-container__filter-btns {
+  display: flex;
+  gap: 1rem;
+  justify-content: end;
 }
 
 .turnos-page__action-buttons {

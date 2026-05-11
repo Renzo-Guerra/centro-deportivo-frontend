@@ -4,6 +4,7 @@ export * from "./DisplayTurnosDisponibles/DisplayTurnosDisponibles";
 export * from "./FormCancha/FormCancha";
 export * from "./FormInput/FormInput";
 export * from "./FormLogIn/FormLogIn";
+export * from "./FormTurnoRange/FormTurnoRange";
 export * from "./FormSelect/FormSelect";
 export * from "./FormTurno/FormTurno";
 export * from "./LinkButton/LinkButton";

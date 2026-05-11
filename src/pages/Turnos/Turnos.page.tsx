@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import { useFetchManual } from "../../hooks";
 import { type Page, type Turno, type turnoValues } from "../../models";
 import "./turnos.page.css";
-import { BasicModal, FormTurno, Loading, PageableFooter, TurnoDisplay } from "../../components";
+import { BasicModal, FormTurno, FormTurnoRange, Loading, PageableFooter, TurnoDisplay } from "../../components";
 import toast from "react-hot-toast";
 import { axiosInterceptor } from "../../interceptors";
 import { hasSameValues, mapperTurnoValuesToTurno } from "../../utils";
+import type { TurnoRangeValues } from "../../models/schemas/turnoRange.squema";
 
 export const TurnosPage = () => {
   const { data: pageTurnos, isLoading, error, submitRequest: loadTurnos } = useFetchManual<Page<Turno>>();
@@ -14,7 +15,19 @@ export const TurnosPage = () => {
   const [isModalAddActive, setIsModalAddActive] = useState<boolean>(false);
   const [isModalDeleteActive, setIsModalDeleteActive] = useState<boolean>(false);
   const [isModalEditActive, setIsModalEditActive] = useState<boolean>(false);
-  const defaultTurnosUrl = new URL(axiosInterceptor.defaults.baseURL + "/turnos?sortBy=inicioTurno,ASC&sortBy=finTurno,ASC&pageNo=0&pageSize=10");
+  const [isModalDateRangeActive, setIsModalDateRangeActive] = useState<boolean>(false);
+
+  const urlParams = new URLSearchParams({
+    pageNo: "0",
+    pageSize: "10"
+  });
+
+  urlParams.append("sortBy", "inicioTurno,ASC");
+  urlParams.append("sortBy", "finTurno,ASC");
+
+  const baseUrl = axiosInterceptor.defaults.baseURL + "/turnos";
+  const defaultTurnosUrl = new URL(baseUrl);
+  defaultTurnosUrl.search = urlParams.toString();
 
   const [turnosUrl, setTurnosUrl] = useState<URL>(defaultTurnosUrl);
 
@@ -82,6 +95,7 @@ export const TurnosPage = () => {
     setIsModalAddActive(false);
     setIsModalDeleteActive(false);
     setIsModalEditActive(false);
+    setIsModalDateRangeActive(false);
   }
 
   const traerPaginaAnterior = () => {
@@ -113,6 +127,7 @@ export const TurnosPage = () => {
     }
 
     // Si bien nos traemos todos, solo nos importa el primero (inicioTurno)
+
     const params: string[] = turnosUrl.searchParams.getAll("sortBy");
     if (params.length == 0) { return; }
 
@@ -141,6 +156,18 @@ export const TurnosPage = () => {
     setTurnosUrl(aux);
   }
 
+  const filterFecha = (data: TurnoRangeValues) => {
+    urlParams.set("desde", data.desde);
+    urlParams.set("hasta", data.hasta);
+
+    const newUrl = new URL(`${baseUrl}/rango`);
+    newUrl.search = urlParams.toString();
+    console.log(newUrl);
+
+    setTurnosUrl(newUrl);
+    closeModal();
+  }
+
   return (
     <>
       <div className="page-container">
@@ -155,11 +182,19 @@ export const TurnosPage = () => {
         {!isLoading && !error && pageTurnos && (
           <div className="turnos-container">
             {pageTurnos.totalElements == 0 && (
-              <p>Parece que no hay turnos cargados en el sistema!</p>
+              <p>
+                {
+                  defaultTurnosUrl === turnosUrl
+                    ? "Parece que no hay turnos cargados en el sistema!"
+                    : `No se encontraron turnos entre el ${turnosUrl.searchParams.get("desde")} y el ${turnosUrl.searchParams.get("hasta")}`
+                }</p>
             )}
             {pageTurnos.content && (
               <>
-                <button className="btn btn-primary border-radius--500 turnos-container__reverseBtn" onClick={reverseOrder}>Ver mas {turnosUrl.searchParams.get("sortBy")?.includes("ASC") ? "antiguos" : "nuevos"}</button>
+                <div className="turnos-container__filter-btns">
+                  <button className="btn btn-accent border-radius--500" onClick={() => setIsModalDateRangeActive(true)}>Buscar por fecha</button>
+                  <button className="btn btn-primary border-radius--500" onClick={reverseOrder}>Ver mas {turnosUrl.searchParams.get("sortBy")?.includes("ASC") ? "antiguos" : "nuevos"}</button>
+                </div>
                 {pageTurnos.content.map(turno => (
                   <TurnoDisplay key={turno.id} turno={turno} >
                     <div className="turnos-page__action-buttons">
@@ -201,6 +236,12 @@ export const TurnosPage = () => {
               turno={selectedTurno}
               onSubmit={(data: turnoValues) => submitEdit(data)}
               onCancel={closeModal} />
+          </BasicModal>
+        )}
+
+        {isModalDateRangeActive && (
+          <BasicModal titulo="Filtrar turnos por fecha" closeModal={closeModal}>
+            <FormTurnoRange onSubmit={(data: TurnoRangeValues) => filterFecha(data)} />
           </BasicModal>
         )}
       </div>
