@@ -32,7 +32,11 @@
     grid-template-columns: repeat(4, 1fr);
   }
 
+
+  /* 
+  TODO: Mostrar "milestones" del lado derecho de 
+  * los turnos del dia para tener stats del sistema
   .dashboard__summary-container {
     grid-template-columns: repeat(2, 1fr);
-  }
+  } */
 }
