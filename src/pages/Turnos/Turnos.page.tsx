@@ -21,7 +21,7 @@ export const TurnosPage = () => {
     pageSize: "10"
   });
 
-  urlParams.append("sortBy", "inicioTurno,ASC");
+  urlParams.append("sortBy", "inicioTurno,DESC");
   urlParams.append("sortBy", "finTurno,ASC");
 
   const baseUrl = axiosInterceptor.defaults.baseURL + "/turnos";
@@ -176,7 +176,7 @@ export const TurnosPage = () => {
               <>
                 <div className="turnos-container__filter-btns">
                   <button className="btn btn-accent border-radius--500" onClick={() => setIsModalDateRangeActive(true)}>Buscar por fecha</button>
-                  <button className="btn btn-primary border-radius--500" onClick={reverseOrder}>Ver mas {turnosUrl.searchParams.get("sortBy")?.includes("ASC") ? "antiguos" : "nuevos"}</button>
+                  <button className="btn btn-primary border-radius--500" onClick={reverseOrder}>Ver mas {turnosUrl.searchParams.get("sortBy")?.includes("ASC") ? "nuevos" : "antiguos"}</button>
                 </div>
                 <p>Resultados encontrados: {pageTurnos.totalElements}</p>
                 {pageTurnos.content.map(turno => (
