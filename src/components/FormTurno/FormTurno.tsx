@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FormInput } from "../FormInput/FormInput";
 import { FormSelect } from "../FormSelect/FormSelect";
 import type { OptionForSelect } from "../../models/types/optionForSelect";
-import { formatDateTime, toDateLocal } from "../../utils";
+import { formatArg, formatToDateLocal } from "../../utils";
 import { useFetchAutomatico, useFetchManual } from "../../hooks";
 import { useEffect, useMemo, useState } from "react";
 import { Loading } from "../Loading/Loading";
@@ -22,7 +22,7 @@ export const FormTurno = ({ turno, onSubmit, onCancel }: Props) => {
   const [selectedCancha, setSelectedCancha] = useState<string>("");
 
   if (turno && !selectedHorario && !selectedCancha) {
-    setSelectedHorario(formatDateTime(turno.inicioTurno).split("T")[1]);
+    setSelectedHorario(formatArg(turno.inicioTurno, "HH:mm"));
     setSelectedCancha(String(turno.id));
   }
 
@@ -59,10 +59,10 @@ export const FormTurno = ({ turno, onSubmit, onCancel }: Props) => {
       deporte: turno?.deporte ?? deporteOptions[0].value,
       duracionTurnoMinutos: turno?.duracionTurnoMinutos ?? DURACION_TURNOS_MINUTOS_OBJETO[TIPOS_CANCHA_ARRAY[0]],
       diaTurno: turno?.inicioTurno
-        ? toDateLocal(turno.inicioTurno)
-        : toDateLocal(new Date()),
+        ? formatToDateLocal(turno.inicioTurno)
+        : formatToDateLocal(Date()),
       horarioTurno: turno?.inicioTurno
-        ? formatDateTime(turno.inicioTurno).split("T")[1]
+        ? formatArg(turno.inicioTurno, "HH:mm")
         : undefined,
       idCancha: turno?.idCancha.toString() ?? "",
     }

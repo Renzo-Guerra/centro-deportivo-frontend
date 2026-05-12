@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import type { Turno } from "../../models";
 import "./TurnoDisplay.css";
-import { addDeporteClass, addMinutes, formatDate, formatDateTime } from "../../utils";
+import { addDeporteClass, addMinutes, formatArg } from "../../utils";
 
 interface Props {
   turno: Turno,
@@ -12,7 +12,7 @@ export const TurnoDisplay = ({ turno, children }: Props) => {
   return (
     <>
       <div className={`turno-display__container`}>
-        <span className="turno-display__horarios__fecha">{formatDate(turno.inicioTurno)}</span>
+        <span className="turno-display__horarios__fecha">{formatArg(turno.inicioTurno, "dddd-MM-yyyy")}</span>
         <div className="turno-display__info">
           <div className="turno-display__cliente">
             <p className="turno-display__cliente__nombre">{turno.nombreCliente} {turno.apellidoCliente}</p>
@@ -20,7 +20,7 @@ export const TurnoDisplay = ({ turno, children }: Props) => {
             <p className="turno-display__cliente__celular">Cel: {turno.celularCliente}</p>
           </div>
           <div className="turno-display__horarios">
-            <span className="turno-display__horarios__horario">{formatDateTime(turno.inicioTurno).split("T")[1]} - {formatDateTime(addMinutes(turno.inicioTurno, turno.duracionTurnoMinutos)).split("T")[1]}</span>
+            <span className="turno-display__horarios__horario">{formatArg(turno.inicioTurno, "HH:mm")} - {formatArg(addMinutes(turno.inicioTurno, turno.duracionTurnoMinutos), "HH:mm")}</span>
             <span className="turno-display__horarios__duracion">{turno.duracionTurnoMinutos} min</span>
           </div>
         </div>

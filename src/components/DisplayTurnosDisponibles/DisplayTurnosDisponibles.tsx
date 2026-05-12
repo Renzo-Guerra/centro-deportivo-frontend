@@ -1,5 +1,5 @@
 import { DURACION_TURNOS_MINUTOS_OBJETO, type Cancha, type Turno } from "../../models";
-import { addMinutes, formatDateTime } from "../../utils";
+import { addMinutes, formatArg } from "../../utils";
 import "./displayTurnosDisponibles.css";
 
 interface Props {
@@ -58,7 +58,7 @@ export const DisplayTurnosDisponibles = ({ cancha, idSelectedCancha, selectedHor
               <button
                 className={`btn btn-primary border-radius--500 turnos-disponibles__horario`}
                 disabled={filteredTurnos.some(currTurno => {
-                  const mismoHorario = horario === formatDateTime(currTurno.inicioTurno).split("T")[1];
+                  const mismoHorario = horario === formatArg(currTurno.inicioTurno, "HH:mm");
 
                   // El botón se deshabilita si coincide el horario Y NO es el turno que estamos editando.
                   return mismoHorario && String(currTurno.id) !== idSelectedTurno;

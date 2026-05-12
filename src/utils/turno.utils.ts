@@ -1,5 +1,5 @@
 import { TIPOS_CANCHA_ARRAY, type Turno, type turnoValues } from "../models";
-import { toDateTimeLocal } from "./date.utils";
+import { formatToDateTime } from "./date.utils";
 
 export const isTurnoEnCurso = (turno: Turno) => {
   const now = new Date().getTime();
@@ -34,7 +34,7 @@ export const hasSameValues = (turno: Turno | null, newData: turnoValues) => {
     turno.apellidoCliente === newData.apellidoCliente &&
     turno.celularCliente === newData.celularCliente &&
     turno.idCancha.toString() === newData.idCancha &&
-    toDateTimeLocal(turno.inicioTurno) === toDateTimeLocal(`${newData.diaTurno}T${newData.horarioTurno}`) &&
+    formatToDateTime(turno.inicioTurno) === formatToDateTime(`${newData.diaTurno}T${newData.horarioTurno}`) &&
     turno.duracionTurnoMinutos === newData.duracionTurnoMinutos
   );
 }

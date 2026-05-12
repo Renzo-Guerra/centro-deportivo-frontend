@@ -3,7 +3,7 @@ import "./formTurnoRange.css";
 import { FormInput } from "../FormInput/FormInput";
 import { turnoRangeScheema, type TurnoRangeValues } from "../../models/schemas/turnoRange.squema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { addMinutes, toDateLocal } from "../../utils";
+import { formatToDateLocal, subtractDays } from "../../utils";
 
 interface Props {
   onSubmit: (data: TurnoRangeValues) => void,
@@ -15,12 +15,12 @@ export const FormTurnoRange = ({ onSubmit }: Props) => {
     handleSubmit,
     control,
     formState: { errors, isLoading }
-  } = useForm<TurnoRangeValues>({
+  } = useForm({
     resolver: zodResolver(turnoRangeScheema),
     // Por defecto filtra para traer los ultimos 7 dias
     defaultValues: {
-      desde: toDateLocal(new Date(addMinutes(new Date(), 60 * 24 * 7 * -1))),
-      hasta: toDateLocal(new Date()),
+      desde: formatToDateLocal(subtractDays(new Date(), 7)),
+      hasta: formatToDateLocal(new Date()),
     }
   });
 

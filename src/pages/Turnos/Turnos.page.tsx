@@ -5,8 +5,9 @@ import "./turnos.page.css";
 import { BasicModal, FormTurno, FormTurnoRange, Loading, PageableFooter, TurnoDisplay } from "../../components";
 import toast from "react-hot-toast";
 import { axiosInterceptor } from "../../interceptors";
-import { hasSameValues, mapperTurnoValuesToTurno } from "../../utils";
+import { ARG_TZ, formatArg, hasSameValues, mapperTurnoValuesToTurno } from "../../utils";
 import type { TurnoRangeValues } from "../../models/schemas/turnoRange.squema";
+import { format, toZonedTime } from "date-fns-tz";
 
 export const TurnosPage = () => {
   const { data: pageTurnos, isLoading, error, submitRequest: loadTurnos } = useFetchManual<Page<Turno>>();
@@ -140,12 +141,11 @@ export const TurnosPage = () => {
   }
 
   const filterFecha = (data: TurnoRangeValues) => {
-    urlParams.set("desde", data.desde);
-    urlParams.set("hasta", data.hasta);
+    urlParams.set("desde", formatArg(data.desde, "yyyy-MM-dd"));
+    urlParams.set("hasta", formatArg(data.hasta, "yyyy-MM-dd"));
 
     const newUrl = new URL(`${baseUrl}/rango`);
     newUrl.search = urlParams.toString();
-    console.log(newUrl);
 
     setTurnosUrl(newUrl);
     closeModal();

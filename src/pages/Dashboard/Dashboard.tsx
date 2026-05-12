@@ -3,13 +3,13 @@ import { BasicModal, CardTurno, FormTurno, Loading } from "../../components";
 import { MetricCard } from "../../components/MetricCard/MetricCard";
 import { useFetchAutomatico } from "../../hooks";
 import type { Cancha, Turno, turnoValues } from "../../models";
-import { getTodayDateLocal, isTurnoEnCurso, isTurnoFinished, mapperTurnoValuesToTurno } from "../../utils";
+import { formatToDateLocal, isTurnoEnCurso, isTurnoFinished, mapperTurnoValuesToTurno } from "../../utils";
 import "./Dashboard.css";
 import { axiosInterceptor } from "../../interceptors";
 import toast from "react-hot-toast";
 
 export const Dashboard = () => {
-  const { data: turnos, isLoading: isLoadingTurnos, error: errorTurnos } = useFetchAutomatico<Turno[]>(`/turnos/fecha?fecha=${getTodayDateLocal()}&sortBy=inicioTurno`);
+  const { data: turnos, isLoading: isLoadingTurnos, error: errorTurnos } = useFetchAutomatico<Turno[]>(`/turnos/fecha?fecha=${formatToDateLocal(Date())}&sortBy=inicioTurno`);
   const { data: canchas, isLoading: isLoadingCanchas, error: errorCanchas } = useFetchAutomatico<Cancha[]>(`/canchas/all?sortBy=tipo,asc&sortBy=nombre,asc`);
   const [isModalAddActive, setIsModalAddActive] = useState<boolean>(false);
 
