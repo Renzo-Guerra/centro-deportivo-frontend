@@ -5,3 +5,4 @@ export * from "./types/cancha";
 export * from "./types/HtppMethodType";
 export * from "./types/page";
 export * from "./types/turno";
+export * from "./VariablesNegocio";

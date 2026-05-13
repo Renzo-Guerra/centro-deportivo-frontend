@@ -1,5 +1,5 @@
 import { formatInTimeZone } from 'date-fns-tz';
-import { subDays, addHours as addHoursFn, addMinutes as addMinutesFn } from 'date-fns';
+import { subDays, addHours as addHoursFn, addMinutes as addMinutesFn, differenceInMinutes } from 'date-fns';
 
 export const ARG_TZ = 'America/Argentina/Buenos_Aires';
 
@@ -41,3 +41,14 @@ export const addHours = (date: Date | string, cant: number): string => {
   const newDate = addHoursFn(new Date(date), cant);
   return formatArg(newDate, `yyyy-MM-dd'T'HH:mm`);
 };
+
+/**
+ * @summary Get the number of minutes between the given dates.
+ * @description Get the signed number of full (rounded towards 0) minutes between the given dates.
+ * @returns The number of minutes
+ */
+export const diffMinutes = (date1: Date, date2: Date) => {
+  return date1.getTime() > date2.getTime()
+    ? differenceInMinutes(date1, date2)
+    : differenceInMinutes(date2, date1);
+}

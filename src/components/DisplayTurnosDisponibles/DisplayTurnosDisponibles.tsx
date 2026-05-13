@@ -1,5 +1,5 @@
-import { DURACION_TURNOS_MINUTOS_OBJETO, type Cancha, type Turno } from "../../models";
-import { addMinutes, formatArg } from "../../utils";
+import { DURACION_TURNOS_MINUTOS_OBJETO, FIN_HORARIO_JORNADA, INICIO_HORARIO_JORNADA, type Cancha, type Turno } from "../../models";
+import { addMinutes, diffMinutes, formatArg } from "../../utils";
 import "./displayTurnosDisponibles.css";
 
 interface Props {
@@ -12,26 +12,14 @@ interface Props {
 }
 
 export const DisplayTurnosDisponibles = ({ cancha, idSelectedCancha, selectedHorario, turnos, idSelectedTurno = "", onClick }: Props) => {
-  const inicio = new Date();
-  inicio.setHours(12);
-  inicio.setMinutes(0);
-  inicio.setSeconds(0);
-  inicio.setMilliseconds(0);
-
-  const fin = new Date();
-  fin.setHours(20);
-  fin.setMinutes(0);
-  fin.setSeconds(0);
-  fin.setMilliseconds(0);
-
-  let diferenciaEnMinutos = (fin.getTime() - inicio.getTime()) / 1000 / 60;
+  let diferenciaEnMinutos = diffMinutes(INICIO_HORARIO_JORNADA, FIN_HORARIO_JORNADA);
   // Turnos disponibles
   const cantTurnosPosibles = Math.floor(diferenciaEnMinutos / DURACION_TURNOS_MINUTOS_OBJETO[cancha.tipo]);
 
   const posiblesHorarios: string[] = [];
 
   for (let index = 0; index < cantTurnosPosibles; index++) {
-    posiblesHorarios.push(addMinutes(inicio, (index * DURACION_TURNOS_MINUTOS_OBJETO[cancha.tipo])))
+    posiblesHorarios.push(addMinutes(INICIO_HORARIO_JORNADA, (index * DURACION_TURNOS_MINUTOS_OBJETO[cancha.tipo])))
   }
 
   const filteredTurnos = turnos.filter(t => t.idCancha === cancha.id);
@@ -45,7 +33,7 @@ export const DisplayTurnosDisponibles = ({ cancha, idSelectedCancha, selectedHor
           const isSelected = selectedHorario == horario && idSelectedCancha == String(cancha.id);
 
           return (
-            <div key={currHorario.toString()}>
+            <div key={currHorario}>
               <input
                 className={`hidden ${isSelected ? "horario--selected" : ""}`}
                 readOnly={true}
