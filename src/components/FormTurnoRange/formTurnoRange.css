@@ -1,5 +1,15 @@
 .form-turno-range {
   display: grid;
-  justify-items: center;
   gap: 1rem;
+}
+
+.form-turno-range__filterContainer {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, auto);
+  justify-content: flex-start;
+}
+
+.form-turno-range__submitBtn {
+  justify-self: center;
 }

@@ -1,5 +1,5 @@
 import { formatInTimeZone } from 'date-fns-tz';
-import { subDays, addHours as addHoursFn, addMinutes as addMinutesFn, differenceInMinutes } from 'date-fns';
+import { addDays as addDaysFn, subDays as subDaysFn, addHours as addHoursFn, addMinutes as addMinutesFn, differenceInMinutes } from 'date-fns';
 
 export const ARG_TZ = 'America/Argentina/Buenos_Aires';
 
@@ -27,7 +27,13 @@ export const formatToDateTime = (date: Date | string): string => formatArg(date,
 // Resta dias a una fecha
 export const subtractDays = (date: Date | string | number, days: number): Date => {
   const d = typeof date === 'string' ? new Date(date) : date;
-  return subDays(d, days);
+  return subDaysFn(d, days);
+}
+
+// Resta dias a una fecha
+export const addDays = (date: Date | string | number, days: number): Date => {
+  const d = typeof date === 'string' ? new Date(date) : date;
+  return addDaysFn(d, days);
 }
 
 // Agrega minutos a una fecha
