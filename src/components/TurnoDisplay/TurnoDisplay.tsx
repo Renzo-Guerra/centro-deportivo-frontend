@@ -12,7 +12,7 @@ export const TurnoDisplay = ({ turno, children }: Props) => {
   return (
     <>
       <div className={`turno-display__container`}>
-        <span className="turno-display__horarios__fecha">{formatArg(turno.inicioTurno, "dddd-MM-yyyy")}</span>
+        <span className="turno-display__horarios__fecha">{formatArg(turno.inicioTurno, "dd-MM-yyyy")}</span>
         <div className="turno-display__info">
           <div className="turno-display__cliente">
             <p className="turno-display__cliente__nombre">{turno.nombreCliente} {turno.apellidoCliente}</p>
