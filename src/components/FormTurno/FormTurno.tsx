@@ -45,7 +45,6 @@ export const FormTurno = ({ turno, onSubmit, onCancel }: Props) => {
     handleSubmit,
     control,
     setValue,
-    getValues,
     formState: { errors, isLoading }
   } = useForm({
     resolver: zodResolver(turnoSchema),
@@ -136,8 +135,6 @@ export const FormTurno = ({ turno, onSubmit, onCancel }: Props) => {
     // busca directamente TODOS los turnos del dia seleccionado.
     // Se filtran/ordenan del lado del cliente
   }, [diaSeleccionado]);
-
-  console.log(getValues());
 
   return (
     <>

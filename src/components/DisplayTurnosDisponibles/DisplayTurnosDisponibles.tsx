@@ -13,13 +13,13 @@ interface Props {
 
 export const DisplayTurnosDisponibles = ({ cancha, idSelectedCancha, selectedHorario, turnos, idSelectedTurno = "", onClick }: Props) => {
   const inicio = new Date();
-  inicio.setHours(21);
+  inicio.setHours(12);
   inicio.setMinutes(0);
   inicio.setSeconds(0);
   inicio.setMilliseconds(0);
 
   const fin = new Date();
-  fin.setHours(6);
+  fin.setHours(20);
   fin.setMinutes(0);
   fin.setSeconds(0);
   fin.setMilliseconds(0);

@@ -1,17 +1,25 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { BasicModal, CardTurno, FormTurno, Loading } from "../../components";
 import { MetricCard } from "../../components/MetricCard/MetricCard";
-import { useFetchAutomatico } from "../../hooks";
+import { useFetchAutomatico, useFetchManual } from "../../hooks";
 import type { Cancha, Turno, turnoValues } from "../../models";
-import { formatToDateLocal, isTurnoEnCurso, isTurnoFinished, mapperTurnoValuesToTurno } from "../../utils";
+import { formatArg, formatToDateLocal, isTurnoEnCurso, isTurnoFinished, mapperTurnoValuesToTurno } from "../../utils";
 import "./Dashboard.css";
 import { axiosInterceptor } from "../../interceptors";
 import toast from "react-hot-toast";
 
 export const Dashboard = () => {
-  const { data: turnos, isLoading: isLoadingTurnos, error: errorTurnos } = useFetchAutomatico<Turno[]>(`/turnos/fecha?fecha=${formatToDateLocal(Date())}&sortBy=inicioTurno`);
+  const { data: turnos, isLoading: isLoadingTurnos, error: errorTurnos, submitRequest: loadTurnos } = useFetchManual<Turno[]>();
   const { data: canchas, isLoading: isLoadingCanchas, error: errorCanchas } = useFetchAutomatico<Cancha[]>(`/canchas/all?sortBy=tipo,asc&sortBy=nombre,asc`);
   const [isModalAddActive, setIsModalAddActive] = useState<boolean>(false);
+
+  const reloadTurnos = () => {
+    loadTurnos(`/turnos/fecha?fecha=${formatToDateLocal(Date())}&sortBy=inicioTurno`);
+  }
+
+  useEffect(() => {
+    reloadTurnos()
+  }, []);
 
   const turnosEnCurso = useMemo(() => {
     return turnos ? turnos.filter(t => isTurnoEnCurso(t)) : [];
@@ -31,6 +39,9 @@ export const Dashboard = () => {
         // No es necesario un error porque axiosInterceptor lo maneja
       }).then(() => {
         setIsModalAddActive(false);
+        if (formatArg(newTurno.inicioTurno, "yyyy-MM-dd") === formatArg(Date(), "yyyy-MM-dd")) {
+          reloadTurnos();
+        }
       });
     // No es necesario el catch ya que el axiosInterceptor lo maneja
   }
