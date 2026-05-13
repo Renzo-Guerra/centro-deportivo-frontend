@@ -5,9 +5,8 @@ import "./turnos.page.css";
 import { BasicModal, FormTurno, FormTurnoRange, Loading, PageableFooter, TurnoDisplay } from "../../components";
 import toast from "react-hot-toast";
 import { axiosInterceptor } from "../../interceptors";
-import { ARG_TZ, formatArg, hasSameValues, mapperTurnoValuesToTurno } from "../../utils";
+import { formatArg, hasSameValues, mapperTurnoValuesToTurno } from "../../utils";
 import type { TurnoRangeValues } from "../../models/schemas/turnoRange.squema";
-import { format, toZonedTime } from "date-fns-tz";
 
 export const TurnosPage = () => {
   const { data: pageTurnos, isLoading, error, submitRequest: loadTurnos } = useFetchManual<Page<Turno>>();
@@ -151,6 +150,16 @@ export const TurnosPage = () => {
     closeModal();
   }
 
+  const isSameHref = () => {
+    return turnosUrl.href === defaultTurnosUrl.href;
+  }
+
+  const resetFiltros = () => {
+    if (!isSameHref()) {
+      setTurnosUrl(defaultTurnosUrl);
+    }
+  }
+
   return (
     <>
       <div className="page-container">
@@ -175,8 +184,9 @@ export const TurnosPage = () => {
             {pageTurnos.content && (
               <>
                 <div className="turnos-container__filter-btns">
-                  <button className="btn btn-accent border-radius--500" onClick={() => setIsModalDateRangeActive(true)}>Buscar por fecha</button>
-                  <button className="btn btn-primary border-radius--500" onClick={reverseOrder}>Ver mas {turnosUrl.searchParams.get("sortBy")?.includes("ASC") ? "nuevos" : "antiguos"}</button>
+                  <button className={`btn btn-primary border-radius--500 ${isSameHref() ? "hidden" : ""}`} onClick={resetFiltros}>Eliminar filtros</button>
+                  <button className="btn btn-secondary border-radius--500" onClick={() => setIsModalDateRangeActive(true)}>Buscar por fecha</button>
+                  <button className="btn btn-secondary border-radius--500" onClick={reverseOrder}>Ver mas {turnosUrl.searchParams.get("sortBy")?.includes("ASC") ? "nuevos" : "antiguos"}</button>
                 </div>
                 <p>Resultados encontrados: {pageTurnos.totalElements}</p>
                 {pageTurnos.content.map(turno => (

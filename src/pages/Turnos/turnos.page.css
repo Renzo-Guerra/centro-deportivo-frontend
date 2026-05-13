@@ -5,9 +5,9 @@
 }
 
 .turnos-container__filter-btns {
-  display: flex;
+  display: grid;
+  justify-content: center;
   gap: 1rem;
-  justify-content: end;
 }
 
 .turnos-page__action-buttons {
@@ -26,4 +26,11 @@
 .turnos__modal__action-buttons {
   display: flex;
   justify-content: space-between;
+}
+
+@media screen and (min-width: 500px) {
+  .turnos-container__filter-btns {
+    grid-template-columns: repeat(3, auto);
+    justify-content: end;
+  }
 }
