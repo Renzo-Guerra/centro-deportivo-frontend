@@ -13,13 +13,13 @@ interface Props {
 
 export const DisplayTurnosDisponibles = ({ cancha, idSelectedCancha, selectedHorario, turnos, idSelectedTurno = "", onClick }: Props) => {
   const inicio = new Date();
-  inicio.setHours(9);
+  inicio.setHours(21);
   inicio.setMinutes(0);
   inicio.setSeconds(0);
   inicio.setMilliseconds(0);
 
   const fin = new Date();
-  fin.setHours(24);
+  fin.setHours(6);
   fin.setMinutes(0);
   fin.setSeconds(0);
   fin.setMilliseconds(0);
@@ -41,7 +41,6 @@ export const DisplayTurnosDisponibles = ({ cancha, idSelectedCancha, selectedHor
       <p>{cancha.nombre}</p>
       <div className="turnos-disponibles__container">
         {posiblesHorarios.map(currHorario => {
-
           const horario = currHorario.split("T")[1];
           const isSelected = selectedHorario == horario && idSelectedCancha == String(cancha.id);
 
