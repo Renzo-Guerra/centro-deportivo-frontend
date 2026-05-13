@@ -39,7 +39,7 @@ axiosInterceptor.interceptors.response.use(
         toast.error("Permisos insuficientes!");
       }; break;
       default: {
-        toast.error(error.response.data.error);
+        toast.error(error.response?.data?.error || error.response?.data || "Error de autenticación");
       }
     }
     return Promise.reject(error);
