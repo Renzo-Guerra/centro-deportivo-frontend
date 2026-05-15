@@ -1,7 +1,7 @@
 import type { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { axiosInterceptor } from "../interceptors";
-import type { HttpMethodType } from "../models";
+import type { HttpMethodType } from "../models/types/HtppMethodType";
 
 export const useFetchAutomatico = <T,>(url: string, method: HttpMethodType = "GET") => {
   const [data, setData] = useState<T | null>(null);
