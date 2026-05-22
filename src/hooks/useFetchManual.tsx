@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { AxiosError } from "axios";
 import { axiosInterceptor } from "../interceptors";
-import type { HttpMethodType } from "../models/types/HtppMethodType";
+import type { HttpMethodType } from "../models";
 
 export const useFetchManual = <T,>() => {
   const [data, setData] = useState<T | null>(null);
