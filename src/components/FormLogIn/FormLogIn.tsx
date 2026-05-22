@@ -1,12 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { type LogInFormValues, logInSchema } from "../../models"
-import { useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./FormLogIn.css";
-import { useFetchManual } from "../../hooks";
 import { FormInput } from "../FormInput/FormInput";
 import toast from "react-hot-toast";
+import { axiosInterceptor } from "../../interceptors";
 
 export const FormLogIn = () => {
   const {
@@ -16,33 +16,32 @@ export const FormLogIn = () => {
   } = useForm<LogInFormValues>({
     resolver: zodResolver(logInSchema),
     defaultValues: {
-      email: "",
-      contrasenia: "",
+      email: "admin@gmail.com",
+      contrasenia: "admin123",
     }
   });
 
   const navigate = useNavigate();
 
-  const { data, isLoading, error, submitRequest } = useFetchManual<{ token: string }>();
-
-  // Al enviarse el form, si el log in es valido, devolverá el token al usuario, 
-  // el cual guardaremos en el Local Storage
-  useEffect(() => {
-    if (data) {
-      localStorage.setItem("token", data.token);
-      navigate("/dashboard", { replace: true })
-    }
-    if (error) {
-      switch (error.status) {
-        case 401: toast.error("Credenciales inválidas!\nIntente nuevamente"); break;
-        default: toast.error("Ocurrió un error inesperado en el servidor...");
-      }
-    }
-  }, [data, error])
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const submitHandler = (data: LogInFormValues) => {
-    const urlLogIn = "/autenticacion/login";
-    submitRequest(urlLogIn, "POST", data);
+    setIsLoading(true);
+    toast.promise(async () => axiosInterceptor.post("/autenticacion/login", data),
+      {
+        loading: "Enviando",
+        success: "LogIn exitoso!",
+      }).then(response => {
+        localStorage.setItem("token", response.data.token);
+        navigate("/dashboard", { replace: true });
+      })
+      .catch(err => {
+        switch (err.status) {
+          case 401: toast.error("Credenciales inválidas!\nIntente nuevamente"); break;
+          default: toast.error("Ocurrió un error inesperado en el servidor...");
+        }
+      })
+      .finally(() => setIsLoading(false));
   }
 
   return (
