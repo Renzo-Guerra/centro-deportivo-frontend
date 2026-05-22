@@ -119,34 +119,36 @@ export const CanchasPage = () => {
         {!isLoadingCanchas && errorCanchas && (
           <p>{errorCanchas.message}</p>
         )}
-        <button className="btn btn-accent border-radius--500 btn-crear-cancha" onClick={() => setIsModalAddActive(true)}>Agregar cancha</button>
         {!isLoadingCanchas && !errorCanchas && (
-          <div className="canchas-container">
-            {pageCancha?.totalElements == 0 && (
-              <p>Parece que no hay canchas cargadas al sistema!</p>
-            )}
-            {pageCancha?.content.map(cancha => (
-              <CanchaDisplay key={cancha.id} cancha={cancha} >
-                <div className="canchas-page__action-buttons">
-                  <button className="btn btn-accent border-radius--500" onClick={() => onClickVerTurnos(cancha)}>Turnos</button>
-                  <button className="btn btn-secondary border-radius--500" onClick={() => onClickEdit(cancha)}>Editar</button>
-                  <button className="btn btn-danger border-radius--500" onClick={() => onClickDelete(cancha)}>Eliminar</button>
-                </div>
-              </CanchaDisplay>
-            ))}
-
-            {isModalDeleteActive && (
-              <BasicModal titulo="Eliminar cancha" closeModal={closeModal}>
-                <div className="canchas__modal">
-                  <p>¿Estás seguro que quieres eliminar la cancha "{selectedCancha?.nombre}"?</p>
-                  <div className="canchas__modal__action-buttons">
-                    <button className="btn btn-secondary border-radius--500" onClick={closeModal}>Cancelar</button>
-                    <button className="btn btn-danger border-radius--500" onClick={() => selectedCancha ? submitDelete(selectedCancha.id) : ""}>Eliminar</button>
+          <>
+            <button className="btn btn-accent border-radius--500 btn-crear-cancha" onClick={() => setIsModalAddActive(true)}>Agregar cancha</button>
+            <div className="canchas-container">
+              {pageCancha?.totalElements == 0 && (
+                <p>Parece que no hay canchas cargadas al sistema!</p>
+              )}
+              {pageCancha?.content.map(cancha => (
+                <CanchaDisplay key={cancha.id} cancha={cancha} >
+                  <div className="canchas-page__action-buttons">
+                    <button className="btn btn-accent border-radius--500" onClick={() => onClickVerTurnos(cancha)}>Turnos</button>
+                    <button className="btn btn-secondary border-radius--500" onClick={() => onClickEdit(cancha)}>Editar</button>
+                    <button className="btn btn-danger border-radius--500" onClick={() => onClickDelete(cancha)}>Eliminar</button>
                   </div>
-                </div>
-              </BasicModal>
-            )}
-          </div>
+                </CanchaDisplay>
+              ))}
+
+              {isModalDeleteActive && (
+                <BasicModal titulo="Eliminar cancha" closeModal={closeModal}>
+                  <div className="canchas__modal">
+                    <p>¿Estás seguro que quieres eliminar la cancha "{selectedCancha?.nombre}"?</p>
+                    <div className="canchas__modal__action-buttons">
+                      <button className="btn btn-secondary border-radius--500" onClick={closeModal}>Cancelar</button>
+                      <button className="btn btn-danger border-radius--500" onClick={() => selectedCancha ? submitDelete(selectedCancha.id) : ""}>Eliminar</button>
+                    </div>
+                  </div>
+                </BasicModal>
+              )}
+            </div>
+          </>
         )}
 
         {isModalAddActive && (
