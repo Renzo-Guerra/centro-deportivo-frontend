@@ -2,7 +2,8 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 
 export const axiosInterceptor = axios.create({
-  baseURL: "http://localhost:8080/api"
+  // Se carga desde el archivo .env
+  baseURL: import.meta.env.VITE_API_BASE_URL,
 });
 
 axiosInterceptor.interceptors.request.use(request => {
