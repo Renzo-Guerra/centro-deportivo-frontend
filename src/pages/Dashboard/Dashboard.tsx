@@ -49,7 +49,7 @@ export const Dashboard = () => {
   return (
     <>
       <div className="page-container">
-        {isLoadingTurnos || isLoadingCanchas && (
+        {(isLoadingTurnos || isLoadingCanchas) && (
           <Loading mensaje="Cargando dashboard" />
         )}
 
